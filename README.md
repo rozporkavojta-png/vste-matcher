@@ -72,7 +72,7 @@ Procento = podíl bodů vítěze na všech udělených bodech, přepočtený do 
 Kdo vybírá jedním směrem, dostane 96–98 %. Kdo míchá, dostane kolem 80 %.
 Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 
-## Zdroje GIFů (bakaláři)
+## Zdroje GIFů
 
 Živé GIFy jsou z GIPHY, uložené jako `.webp` ve `memes/`. Pro schválení licencí:
 
@@ -86,6 +86,13 @@ Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 | `neuron-activation.webp` | 3C telepatie | https://giphy.com/gifs/n6o5muKaBkYqP0eTUC |
 | `superman-poza.webp` | 3D opravit motor | https://giphy.com/gifs/kCd6XpV0TOMmmjqvo8 |
 | `goku-teleport.webp` | 3E teleportace | https://giphy.com/gifs/UG3ZEtxdjevg1JZqNw |
+| `vlk-hrud.webp` | Ing. 2A Vlk z Wall Street | https://giphy.com/gifs/gdwJdym3VuXQr5OfAc |
+| `pepe-silvia.webp` | Ing. 2B Sherlock Holmes | https://giphy.com/gifs/icgArcntfH5C0 |
+| `stark-genius.webp` | Ing. 2C Tony Stark | https://giphy.com/gifs/t5PkP22ZUskJdkTj0k |
+| `ted-profesor.webp` | Ing. 2D Ted Mosby | https://giphy.com/gifs/kvcqO3ojVie2I |
+| `kapitan.webp` | Ing. 2E kapitán lodi | https://giphy.com/gifs/rVZEejvVWEbug |
+
+Řádky bez „Ing." jsou bakalářské otázky.
 
 ## E-maily
 
