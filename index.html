@@ -149,9 +149,12 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 @media (hover:hover){.choice:hover{border-color:var(--line-strong);transform:translateY(-1px)}
   .choice:hover::before{opacity:.14}}
 
-.tiles{width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;list-style:none;margin:0;padding:0}
-.tiles li{flex:0 0 calc(50% - 6px);min-width:0;display:flex}
-@media (min-width:600px){.tiles li{flex-basis:calc((100% - 24px) / 3)}}
+/* Telefon: dlaždice pod sebou přes celou šířku, ať je GIF velký.
+   Tablet na výšku: 2 sloupce. Tablet na šířku a víc: 3 sloupce. */
+.tiles{width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:14px;list-style:none;margin:0;padding:0}
+.tiles li{flex:0 0 100%;min-width:0;display:flex}
+@media (min-width:600px){.tiles li{flex-basis:calc(50% - 7px)}}
+@media (min-width:1000px){.screen:has(.tiles){max-width:980px}.tiles li{flex-basis:calc((100% - 28px) / 3)}}
 .tile{position:relative;width:100%;display:flex;flex-direction:column;padding:0;text-align:left;overflow:hidden;
   background:var(--surface);border:1.5px solid var(--line-strong);border-radius:var(--r-md);color:var(--paper);
   box-shadow:0 18px 40px -22px rgba(0,0,0,.9);
@@ -161,8 +164,8 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .tile .memebox{flex:0 0 auto;aspect-ratio:4/3}
 /* smyčky dlaždic se rozjedou posunutě, ať všechny „nebouchnou" naráz */
 .tile .memebox *{animation-delay:calc(var(--i,0) * -.55s)}
-.tile .say{margin:0;padding:10px 12px 12px;flex:1 1 auto;font-family:var(--display);font-variation-settings:"wdth" 106,"wght" 750;
-  font-size:clamp(12.5px,1.7vw,15px);line-height:1.2;letter-spacing:-.01em;text-wrap:pretty}
+.tile .say{margin:0;padding:12px 16px 14px;flex:1 1 auto;font-family:var(--display);font-variation-settings:"wdth" 106,"wght" 750;
+  font-size:clamp(16px,2.2vw,19px);line-height:1.25;letter-spacing:-.01em;text-wrap:pretty}
 
 /* Vybraná odpověď se rozzáří, ostatní ustoupí. */
 .choice.chosen,.tile.chosen{border-color:var(--go);box-shadow:0 0 0 3px rgba(53,208,127,.45);
@@ -298,8 +301,6 @@ tr:last-child td{border-bottom:0}
 
 @media (max-width:420px){
   .bar,.stage{padding-inline:16px}
-  .tiles{gap:10px}
-  .tiles li{flex-basis:calc(50% - 5px)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
