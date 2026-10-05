@@ -88,7 +88,7 @@ Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 | `auto-chudy.webp` | 3E teleportace zboží (auto na chůdách přes zácpu) | https://giphy.com/gifs/CZDVvQn78njFu |
 | `vlk-hrud.webp` | Ing. 2A Vlk z Wall Street | https://giphy.com/gifs/gdwJdym3VuXQr5OfAc |
 | `pepe-silvia.webp` | Ing. 2B Sherlock Holmes | https://giphy.com/gifs/icgArcntfH5C0 |
-| `stark-genius.webp` | Ing. 2C Tony Stark | https://giphy.com/gifs/t5PkP22ZUskJdkTj0k |
+| `stark-endgame.webp` | Ing. 2C Tony Stark (Endgame, pohled na Steva) | https://giphy.com/gifs/NDzVwpclOqiprMcfLZ |
 | `ted-profesor.webp` | Ing. 2D Ted Mosby | https://giphy.com/gifs/kvcqO3ojVie2I |
 | `kapitan.webp` | Ing. 2E kapitán lodi | https://giphy.com/gifs/rVZEejvVWEbug |
 
