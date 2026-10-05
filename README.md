@@ -85,7 +85,7 @@ Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 | `bryle-zkoumam.webp` | 3B rentgenový zrak | https://giphy.com/gifs/cM2CN5U99VVWdDGcSA |
 | `neuron-activation.webp` | 3C telepatie | https://giphy.com/gifs/n6o5muKaBkYqP0eTUC |
 | `superman-poza.webp` | 3D opravit motor | https://giphy.com/gifs/kCd6XpV0TOMmmjqvo8 |
-| `mcqueen-speed.webp` | 3E teleportace zboží (Blesk McQueen, I am speed) | https://giphy.com/gifs/BNlGpk9Ea5KSv6Ki0O |
+| `strange-portal.webp` | 3E teleportace zboží (portál Doctora Strange) | https://giphy.com/gifs/3orif7N2qBUUJ2hUK4 |
 | `vlk-hrud.webp` | Ing. 2A Vlk z Wall Street | https://giphy.com/gifs/gdwJdym3VuXQr5OfAc |
 | `pepe-silvia.webp` | Ing. 2B Sherlock Holmes | https://giphy.com/gifs/icgArcntfH5C0 |
 | `stark-genius.webp` | Ing. 2C Tony Stark | https://giphy.com/gifs/t5PkP22ZUskJdkTj0k |

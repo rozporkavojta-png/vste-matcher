@@ -162,7 +162,9 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
   transition:border-color .22s,transform .22s cubic-bezier(.2,.9,.2,1),opacity .3s;
   animation:optIn .46s cubic-bezier(.2,.85,.2,1) both;animation-delay:calc(var(--i,0)*70ms + 60ms)}
 @media (hover:hover){.tile:hover{transform:translateY(-3px);border-color:var(--paper)}}
-.tile .memebox{flex:0 0 auto;aspect-ratio:4/3}
+.tile .memebox{flex:0 0 auto;aspect-ratio:4/3;max-width:100%}
+/* Telefon: nižší GIF (2:1), ať se pod sebou méně scrolluje. Celý GIF je vidět dál, jen s pruhy po stranách. */
+@media (max-width:599px){.tile .memebox{aspect-ratio:2/1}.tiles{gap:10px}.tile .say{padding:9px 14px 11px}}
 /* smyčky dlaždic se rozjedou posunutě, ať všechny „nebouchnou" naráz */
 .tile .memebox *{animation-delay:calc(var(--i,0) * -.55s)}
 .tile .say{margin:0;padding:12px 16px 14px;flex:1 1 auto;font-family:var(--display);font-variation-settings:"wdth" 106,"wght" 750;
@@ -496,7 +498,7 @@ var QUIZ = {
         {t:"Rentgenový zrak — vidím armování v betonu a statiku budov.", m:"bryle-zkoumam.webp", ef:"zoom", e:"🦴", w:{PS:4}, why:"vidíš do konstrukcí"},
         {t:"Telepatie, abych hned věděl, co lidi kolem mě opravdu chtějí.", m:"neuron-activation.webp", ef:"bounce", e:"🧠", w:{RLZ:4}, why:"vnímáš, co lidi chtějí"},
         {t:"Opravit jakýkoliv motor pouhým pohledem.", m:"superman-poza.webp", ef:"press", e:"🔧", w:{STR:4}, why:"rozumíš technice"},
-        {t:"Teleportace zboží a perfektní organizace provozu bez zácp.", m:"mcqueen-speed.webp", ef:"tilt", e:"⚡", w:{TRD:4}, why:"organizuješ provoz"}
+        {t:"Teleportace zboží a perfektní organizace provozu bez zácp.", m:"strange-portal.webp", ef:"tilt", e:"⚡", w:{TRD:4}, why:"organizuješ provoz"}
       ]},
       {tone:"Naostro", q:"Kde se vidíš za pět let?", a:[
         {t:"V kanceláři nad grafy, datovými modely a finančními výkazy.", m:"laughingleo.png", ef:"bounce", e:"📊", w:{BA:3,PE:3}, why:"chceš pracovat s daty a výkazy"},
