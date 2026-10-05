@@ -3,8 +3,14 @@
 Oborová kalkulačka pro stánek VŠTE na Gaudeamu. Uchazeč ji proklikne za minutu
 a dozví se, který studijní program mu sedí nejvíc.
 
-Funguje to jako Tinder, ale místo lidí swipuješ odpovědi: otázka visí nad balíčkem
-a listuješ jejími možnostmi, dokud jedna nesedne.
+Otázky jsou dvojího druhu:
+
+- **Naostro** – klasický kvíz: otázka a pod ní odpovědi v seznamu.
+- **Na odlehčenou** – mřížka meme dlaždic: každá dlaždice je pohyblivý meme
+  a pod ním text odpovědi. Uchazeč klepne na tu, která je on.
+
+Klepnutím se odpověď vybere a jde se rovnou na další otázku. Na konci přijde
+„It's a match" s oborem, který sedí nejvíc.
 
 ## Jak to spustit
 
@@ -21,14 +27,13 @@ Z internetu se tahá jen písmo z Google Fonts — když vypadne, naskočí syst
 
 ## Ovládání
 
-| Gesto | Klávesa | Co to udělá |
+| Dotyk | Klávesa | Co to udělá |
 |---|---|---|
-| swipe doleva | ← | tahle odpověď ne, ukaž další možnost |
-| swipe doprava | → | to jsem já — vybráno, jde se na další otázku |
-| swipe nahoru | ↑ | přesně já — vybráno a počítá se dvojnásobně |
-| — | Backspace | zpět o kartu |
-| — | Esc | restart |
-| — | 1 / 2 | výběr ligy na úvodní obrazovce |
+| klepnutí na odpověď / dlaždici | 1–5 | vybere odpověď, jde se na další otázku |
+| „Nic z toho — přeskočit" | 0 | otázka se přeskočí bez bodů |
+| „Zpět" | Backspace | zpět o otázku |
+| „Znovu" | Esc | restart |
+| klepnutí na ligu | 1 / 2 | výběr ligy na úvodní obrazovce |
 
 **Obsluha stánku:** pětkrát rychle kliknout na logo „VŠTE Matcher" vlevo nahoře.
 Otevře se skrytá obrazovka se sebranými e-maily a tlačítkem na zkopírování CSV.
@@ -37,31 +42,50 @@ Otevře se skrytá obrazovka se sebranými e-maily a tlačítkem na zkopírován
 
 Všechno je v `index.html`, v sekci `QUIZ` ve `<script>`.
 
+Každá otázka má `tone`: `"Naostro"` = klasický kvíz, `"Na odlehčenou"` = meme dlaždice.
+U vážných otázek se pole s memem (`m`, `ef`, `e`) nepoužijí. Meme dlaždice má jen GIF a pod ním
+text odpovědi, žádný další text přes ani nad obrázkem.
+
 Jedna odpověď vypadá takhle:
 
 ```js
 {t:"Propočítám ztrátu produktivity v korunách za minutu.",  // text na kartě
- m:"rollsafe.jpg",          // soubor ze složky memes/
- ef:"zoom",                 // pohyb: zoom | shake | press | tilt | slide | bounce
+ m:"krabs-money.webp",     // soubor ze složky memes/ (.webp/.gif = živý GIF)
+ ef:"zoom",                 // pohyb jen u statických obrázků: zoom | shake | press | tilt | slide | bounce
  e:"🧮",                    // záložní emoji, když se obrázek nenačte
- top:"",                    // horní titulek přes obrázek
- bot:"Nepřijdeš o peníze,\nkdyž si ztrátu spočítáš",   // spodní titulek, \n = nový řádek
  w:{BA:3, PE:2},            // kolik bodů komu odpověď dá
  why:"měříš dopady v číslech"}  // objeví se ve výsledku v „Proč to sedí"
 ```
 
 - **Jiný meme:** nahraď soubor v `memes/` nebo přepiš `m`.
-- **Jiný pohyb:** přepiš `ef`. Spodní titulek vždy naskočí až v „ráně" smyčky.
+- **Jiný pohyb:** přepiš `ef`. Pohyb je schválně jemný, aby byl obrázek vidět celý.
+- **GIFy a samolepky z GIPHY:** ulož `.gif` nebo `.webp` do `memes/` a jméno dej do `m`. Hýbou se samy.
+- **Vážná otázka jako vtipná (nebo naopak):** přepiš `tone`.
 - **Jiný obor:** obory jsou v `PROGRAMS` nahoře.
-- **Odznaky a XP:** `BADGES` a `RANKS`.
-- **Doba do automatického restartu:** `IDLE_MS` (teď 90 s).
+- **Návrat na úvod, když na stánku nikdo nehraje:** `IDLE_MS` (teď 90 s bez dotyku).
+  Hra sama žádný časový limit nemá, uchazeč může nad každou otázkou přemýšlet, jak dlouho chce.
 
 ## Jak se počítá shoda
 
-Každá vybraná odpověď rozdá body konkrétním oborům (`w`), hvězdička je počítá dvojnásobně.
+Každá vybraná odpověď rozdá body konkrétním oborům (`w`).
 Procento = podíl bodů vítěze na všech udělených bodech, přepočtený do rozmezí 78–98 %.
 Kdo vybírá jedním směrem, dostane 96–98 %. Kdo míchá, dostane kolem 80 %.
 Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
+
+## Zdroje GIFů (bakaláři)
+
+Živé GIFy jsou z GIPHY, uložené jako `.webp` ve `memes/`. Pro schválení licencí:
+
+| Soubor | Odpověď | GIPHY |
+|---|---|---|
+| `krabs-money.webp` | 1A propočítám ztrátu | https://giphy.com/gifs/SOmjomEnNHsrK |
+| `kabely-chaos.webp` | 1B zkontroluju kabely | https://giphy.com/gifs/blHeoPXYVzsh8hbEUk |
+| `yapping-telefon.webp` | 1C volám providerovi | https://giphy.com/gifs/BOor7jsYY2JGa8cvtY |
+| `stonks.webp` | 3A vidět do budoucnosti | https://giphy.com/gifs/XDAY1NNG2VvobAp9o0 |
+| `bryle-zkoumam.webp` | 3B rentgenový zrak | https://giphy.com/gifs/cM2CN5U99VVWdDGcSA |
+| `neuron-activation.webp` | 3C telepatie | https://giphy.com/gifs/n6o5muKaBkYqP0eTUC |
+| `superman-poza.webp` | 3D opravit motor | https://giphy.com/gifs/kCd6XpV0TOMmmjqvo8 |
+| `goku-teleport.webp` | 3E teleportace | https://giphy.com/gifs/UG3ZEtxdjevg1JZqNw |
 
 ## E-maily
 
@@ -95,6 +119,6 @@ Podle `VSTE_Matcher_vizualni_zadani.docx`: výrazně oblé rohy, velká tučná 
 | Růžová (akcent) | `#DD3ECA` |
 | Bílá | `#FFFFFF` |
 
-Písmo: Archivo (nadpisy a text), Anton (titulky na memech), IBM Plex Mono (popisky).
+Písmo: Archivo (nadpisy a text), IBM Plex Mono (popisky).
 
 Claim: **Najdi obor, který ti sedí.**
