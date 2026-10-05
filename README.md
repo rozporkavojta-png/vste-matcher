@@ -86,11 +86,11 @@ Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 | `neuron-activation.webp` | 3C telepatie | https://giphy.com/gifs/n6o5muKaBkYqP0eTUC |
 | `superman-poza.webp` | 3D opravit motor | https://giphy.com/gifs/kCd6XpV0TOMmmjqvo8 |
 | `auto-chudy.webp` | 3E teleportace zboží (auto na chůdách přes zácpu) | https://giphy.com/gifs/CZDVvQn78njFu |
-| `vlk-hrud.webp` | Ing. 2A Vlk z Wall Street | https://giphy.com/gifs/gdwJdym3VuXQr5OfAc |
+| `vlk-mikrofon.webp` | Ing. 2A Vlk z Wall Street (Leo s mikrofonem) | https://giphy.com/gifs/Vi4MRwWi9sYpi |
 | `pepe-silvia.webp` | Ing. 2B Sherlock Holmes | https://giphy.com/gifs/icgArcntfH5C0 |
 | `stark-endgame.webp` | Ing. 2C Tony Stark (Endgame, pohled na Steva) | https://giphy.com/gifs/NDzVwpclOqiprMcfLZ |
 | `ted-profesor.webp` | Ing. 2D Ted Mosby | https://giphy.com/gifs/kvcqO3ojVie2I |
-| `kapitan.webp` | Ing. 2E kapitán lodi | https://giphy.com/gifs/rVZEejvVWEbug |
+| `sparrow-pristav.webp` | Ing. 2E kapitán lodi (Jack Sparrow připlouvá do přístavu) | https://giphy.com/gifs/o0eOCNkn7cSD6 |
 
 Řádky bez „Ing." jsou bakalářské otázky.
 
