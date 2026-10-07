@@ -101,22 +101,72 @@ Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 
 Appka se řídí nastavením telefonu (světlý / tmavý). Tlačítkem ☀ / ☾ v liště se dá přepnout ručně, volba se pamatuje v prohlížeči.
 
-## E-maily
+## Formulář a GDPR
 
-Zadané e-maily se **zatím nikam neodesílají** — ukládají se jen do prohlížeče toho
-zařízení (`localStorage`) a vytáhnou se přes skrytou obrazovku obsluhy jako CSV.
-Pro ostrý provoz je potřeba to napojit na formulář nebo mailing nástroj.
+Na výsledku vyplní uchazeč **jméno, příjmení a e-mail** a zaškrtne:
 
-## Co je potřeba dořešit před nasazením
+- **povinný souhlas**: je mu alespoň 15 let a souhlasí se zpracováním údajů pro zaslání výsledku
+  a informací o doporučeném oboru,
+- **nepovinný souhlas**: novinky o přijímačkách, dnech otevřených dveří a akcích.
 
-1. **Licence memů.** Šablony jsou záběry z filmů a fotky skutečných lidí, stažené
-   z veřejného API imgflip.com. Na oficiální appce školy to musí někdo odkývat.
-   Když ne, nahradí se vlastní grafikou — layout i titulky zůstanou.
-2. **Logo.** Teď je to typografický lockup. Pokud existuje schválené logo VŠTE v SVG,
-   patří sem.
-3. **Souhlas se zpracováním.** Text u zaškrtávátka je provizorní, musí ho schválit
-   marketing nebo pověřenec pro GDPR.
-4. **Odesílání e-mailů** — viz výš.
+Odkaz „Zásady zpracování osobních údajů“ otevře plné znění přímo v appce
+(lze ho otevřít i přímo adresou `…/vste-matcher/#zasady`, ta je i v patičce e-mailu).
+U každého kontaktu se ukládá verze a přesné znění souhlasu a čas udělení (čl. 7 odst. 1 GDPR: souhlas musí jít doložit).
+
+Nastavení je v `index.html` v bloku `ODESILANI A GDPR — NASTAVENÍ` (`ZASADY.verze`, `uchovatDo`, `zpracovatel`).
+Když se změní text zásad nebo souhlasu, **zvyš `ZASADY.verze`**.
+
+## Odesílání e-mailů
+
+GitHub Pages je statický web, sám e-maily posílat neumí. Odesílání obstará **Google Apps Script**
+napojený na Google tabulku. Kód je hotový v [`backend/apps-script.gs`](backend/apps-script.gs).
+
+Jak to funguje: uchazeč odešle formulář → kontakt se uloží do zařízení stánku → appka ho pošle
+do Apps Scriptu → ten ho zapíše do tabulky a pošle uchazeči e-mail s výsledkem → appka kontakt
+ze zařízení smaže. Když na stánku nejde internet, kontakt počká a odešle se sám, jakmile se
+připojení vrátí (zkouší to každou minutu).
+
+### Nasazení (cca 15 minut)
+
+1. Přihlas se **školním Google účtem VŠTE**, ne soukromým Gmailem (kvůli GDPR a limitům:
+   školní Workspace pošle až 1 500 e-mailů denně, soukromý Gmail jen 100).
+   Pokud škola Google Workspace nemá, viz „Varianta Microsoft 365“ níž.
+2. Vytvoř novou Google tabulku, třeba „VŠTE Matcher — kontakty“. Nesdílej ji s nikým mimo pověřené lidi.
+3. V tabulce: **Rozšíření → Apps Script**. Smaž ukázkový kód a vlož celý obsah `backend/apps-script.gs`.
+4. Nahoře v souboru vyplň `ODPOVEDI_NA` (např. adresu studijního oddělení) a zkontroluj `KLIC`.
+5. Vyber funkci **`test`** a dej **Spustit**. Google se zeptá na oprávnění (tabulka + odesílání pošty),
+   povol je. Do schránky ti má přijít testovací e-mail. Takhle bude vypadat i e-mail uchazeče.
+6. Vyber funkci **`nastavUklid`** a jednou ji spusť. Tím se zapne denní mazání starých záznamů (doba uchování podle zásad).
+7. **Nasadit → Nové nasazení → typ Webová aplikace**:
+   - Spustit jako: **Já**,
+   - Kdo má přístup: **Kdokoli** (appka na stánku se nepřihlašuje).
+   Zkopíruj adresu, která končí na `/exec`.
+8. V `index.html` vlož tu adresu do `ODESILANI.url`, commitni a pushni.
+9. Zkus to celé na telefonu: projdi kvíz, vyplň svůj e-mail, odešli. Řádek se objeví v tabulce a přijde e-mail.
+
+Při každé změně `apps-script.gs` je potřeba **Nasadit → Spravovat nasazení → upravit → Nová verze**,
+jinak běží stará verze.
+
+### Varianta Microsoft 365 (Power Automate)
+
+Pokud škola jede na Microsoft 365: v Power Automate vytvoř tok „Při přijetí požadavku HTTP“ →
+„Přidat řádek do tabulky“ (Excel v SharePointu) → „Odeslat e-mail (V2)“ ze sdílené schránky.
+Adresu požadavku dej do `ODESILANI.url`. Tok musí vracet JSON `{"ok": true}`, appka podle toho
+pozná úspěch. Trigger HTTP vyžaduje licenci Power Automate Premium. Pak v `ZASADY.zpracovatel`
+změň zpracovatele na Microsoft Ireland Operations Ltd.
+
+## Co je potřeba dořešit před spuštěním
+
+1. **Schválení zásad pověřencem.** Text zásad (obrazovka v appce) a souhlasů je připravený podle GDPR,
+   ale není to právní posudek. Pošli ho pověřenci VŠTE (FairData Professionals a.s.,
+   dpo.vstecb@fairdata.cz) ke schválení. Hlavně dobu uchování (31. 10. 2027) a zpracovatele.
+2. **Záznam o činnostech zpracování** (čl. 30 GDPR). Pověřenec ho doplní do evidence školy.
+3. **Zpracovatelská smlouva.** U Google Workspace / Microsoft 365 ji škola obvykle už má. Ověřit s IT.
+4. **Kdo má přístup k tabulce.** Jen pověření lidé (studijní oddělení, marketing).
+5. **Odvolání souhlasu.** Když někdo odpoví na e-mail nebo napíše pověřenci, smaž jeho řádek z tabulky
+   (do 30 dnů, čl. 12 odst. 3 GDPR).
+6. **Licence memů.** GIFy jsou záběry z filmů a seriálů. Na oficiální appce školy to musí někdo odkývat.
+7. **Logo.** Teď je to typografický lockup. Pokud existuje schválené logo VŠTE v SVG, patří sem.
 
 ## Vizuál
 

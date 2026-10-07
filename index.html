@@ -290,11 +290,32 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .capture{width:100%;background:linear-gradient(140deg,rgba(198,21,23,.22),rgba(148,66,206,.18));
   border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(16px,2.6vw,22px);
   display:flex;flex-direction:column;gap:11px}
-.field{display:flex;gap:10px;flex-wrap:wrap}
-input[type=email]{flex:1 1 210px;min-width:0;background:var(--field);color:var(--paper);
-  border:1.5px solid var(--line-strong);border-radius:var(--r-pill);padding:13px 19px;font:inherit}
-input[type=email]::placeholder{color:var(--grey);opacity:.8}
-input[type=email]:focus{border-color:var(--pink);outline:none}
+.capture h3{margin:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fl.wide{grid-column:1 / -1}
+.fl span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.capture input[type=text],.capture input[type=email]{width:100%;min-width:0;background:var(--field);color:var(--paper);
+  border:1.5px solid var(--line-strong);border-radius:var(--r-pill);padding:13px 19px;font:inherit;font-size:16px}
+.capture input::placeholder{color:var(--grey);opacity:.8}
+.capture input[type=text]:focus,.capture input[type=email]:focus{border-color:var(--pink);outline:none}
+.capture input[aria-invalid="true"]{border-color:var(--err)}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.linkbtn{align-self:flex-start;background:none;border:0;padding:2px 0;color:var(--pink);font-size:13px;font-weight:650;
+  text-decoration:underline;text-underline-offset:3px}
+.cta.wide{width:100%;padding:15px 24px}
+@media (max-width:420px){.fields{grid-template-columns:1fr}}
+
+.gdpr{width:100%;max-width:680px;display:flex;flex-direction:column;gap:8px;text-align:left;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(18px,3vw,28px)}
+.gdpr h2{margin-bottom:2px}
+.gdpr h3{margin:14px 0 0;font-size:16px}
+.gdpr p,.gdpr li{margin:0;color:var(--grey);font-size:14.5px;line-height:1.55}
+.gdpr b{color:var(--paper)}
+.gdpr ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.gdpr .ver{font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+.gdpr .row{margin-top:14px}
+.sel{user-select:all;color:var(--paper);font-weight:600}
 .cta{flex:0 0 auto;border:0;border-radius:var(--r-pill);padding:13px 24px;
   background:linear-gradient(96deg,var(--red-dark),var(--red) 45%,var(--pink));color:#fff;
   font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 800;
@@ -302,8 +323,9 @@ input[type=email]:focus{border-color:var(--pink);outline:none}
   transition:transform .2s cubic-bezier(.2,.9,.2,1),filter .2s}
 .cta:hover{filter:brightness(1.12)}
 .cta:active{transform:scale(.97)}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--grey);line-height:1.4}
-.consent input{margin:2px 0 0;width:18px;height:18px;accent-color:var(--pink);flex:0 0 auto}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--grey);line-height:1.45;cursor:pointer}
+.consent input{margin:1px 0 0;width:22px;height:22px;accent-color:var(--pink);flex:0 0 auto}
+.consent b{color:var(--paper);font-weight:650}
 .err{margin:0;font-size:13px;color:var(--err);font-weight:600}
 .err[hidden]{display:none!important}
 
@@ -417,13 +439,22 @@ tr:last-child td{border-bottom:0}
         <div class="runner" id="rRunner"></div>
 
         <form class="capture" id="leadForm" novalidate>
-          <h3>Chceš kompletní info o oboru do mailu a dárek?</h3>
-          <div class="field">
-            <input type="email" id="email" name="email" placeholder="tvuj@email.cz" autocomplete="email" inputmode="email" aria-label="E-mail">
-            <button type="submit" class="cta">Odeslat a vyzvednout dárek 🎁</button>
+          <h3>Pošleme ti výsledek a info o oboru do mailu</h3>
+          <div class="fields">
+            <label class="fl"><span>Jméno</span>
+              <input type="text" id="firstName" name="jmeno" autocomplete="given-name" autocapitalize="words" maxlength="60" required></label>
+            <label class="fl"><span>Příjmení</span>
+              <input type="text" id="lastName" name="prijmeni" autocomplete="family-name" autocapitalize="words" maxlength="80" required></label>
+            <label class="fl wide"><span>E-mail</span>
+              <input type="email" id="email" name="email" placeholder="tvuj@email.cz" autocomplete="email" inputmode="email" maxlength="120" required></label>
           </div>
-          <label class="consent"><input type="checkbox" id="consent"><span>Souhlasím, aby mi VŠTE poslala informace o studiu na zadaný e-mail.</span></label>
-          <p class="err" id="formErr" hidden></p>
+          <!-- past na roboty: člověk pole nevidí, robot ho vyplní -->
+          <input type="text" id="hp" name="web" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
+          <label class="consent"><input type="checkbox" id="consent"><span>Je mi alespoň 15 let a souhlasím se zpracováním svých osobních údajů (jméno, příjmení, e-mail a výsledek kvízu) Vysokou školou technickou a ekonomickou v Českých Budějovicích za účelem zaslání výsledku a informací o doporučeném oboru. Souhlas můžu kdykoli odvolat. <b>(povinné)</b></span></label>
+          <label class="consent"><input type="checkbox" id="news"><span>Chci dostávat i novinky o přijímačkách, dnech otevřených dveří a akcích VŠTE. (nepovinné)</span></label>
+          <button type="button" class="linkbtn" id="openGdpr">Zásady zpracování osobních údajů</button>
+          <p class="err" id="formErr" role="alert" hidden></p>
+          <button type="submit" class="cta wide">Poslat výsledek na e-mail</button>
         </form>
 
         <div class="row mid"><button class="ghost" id="again">Hrát znovu</button></div>
@@ -442,10 +473,57 @@ tr:last-child td{border-bottom:0}
       <div class="center">
         <div class="seal"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 25l9 9 16-18"/></svg></div>
         <p class="eyebrow">Hotovo</p>
-        <h1>Vyzvedni si <span class="hl">dárek</span></h1>
-        <p class="lead">Info o oboru letí na tvůj e-mail. Dárek si vezmi u stánku VŠTE — stačí říct, že tě poslal Matcher.</p>
+        <h1>Výsledek ti <span class="hl">letí</span> do mailu</h1>
+        <p class="lead" id="thanksText"></p>
         <button class="cta" id="done">Zavřít</button>
       </div>
+    </section>
+
+    <section class="screen" id="s-gdpr" hidden>
+      <article class="gdpr">
+        <p class="eyebrow">Ochrana osobních údajů</p>
+        <h2>Zásady zpracování osobních údajů — VŠTE Matcher</h2>
+        <p class="ver">Verze ze dne <span id="gdprVer"></span></p>
+
+        <h3>1. Kdo tvoje údaje zpracovává</h3>
+        <p>Správcem je <b>Vysoká škola technická a ekonomická v Českých Budějovicích</b>, Okružní 517/10, 370 01 České Budějovice, IČO 75081431 (dále „VŠTE“).</p>
+        <p>Pověřenec pro ochranu osobních údajů: FairData Professionals a.s., e-mail <span class="sel">dpo.vstecb@fairdata.cz</span>, tel. <span class="sel">+420 255 000 376</span>.</p>
+
+        <h3>2. Jaké údaje zpracováváme</h3>
+        <p>Jméno, příjmení, e-mail, výsledek kvízu (doporučený a druhý nejbližší obor, úroveň studia, procento shody), datum a čas odeslání, verzi souhlasu a informaci, jestli chceš dostávat novinky. Tvoje jednotlivé odpovědi v kvízu neukládáme.</p>
+
+        <h3>3. Proč a na jakém základě</h3>
+        <ul>
+          <li><b>Zaslání výsledku a informací o doporučeném oboru a přijímacím řízení</b> na zadaný e-mail. Právní základ je tvůj souhlas (čl. 6 odst. 1 písm. a) GDPR).</li>
+          <li><b>Novinky o přijímačkách, dnech otevřených dveří a akcích VŠTE</b>, jen pokud zaškrtneš druhé políčko. Právní základ je také souhlas.</li>
+        </ul>
+        <p>Poskytnutí údajů je dobrovolné. Kvíz si zahraješ i bez nich, jen ti pak nemůžeme poslat e-mail.</p>
+
+        <h3>4. Jak dlouho údaje uchováváme</h3>
+        <p>Pro zaslání výsledku do konce přijímacího řízení pro akademický rok 2027/2028, nejpozději do <span id="gdprDo"></span>. Pro novinky do odvolání souhlasu, nejdéle 2 roky od jeho udělení. Potom údaje smažeme.</p>
+
+        <h3>5. Kdo k údajům má přístup</h3>
+        <p>Pověření zaměstnanci VŠTE (studijní oddělení a marketing). Údaje technicky zpracovává <span id="gdprZprac"></span> jako zpracovatel podle smlouvy s VŠTE. Údaje neprodáváme ani nepředáváme dalším firmám. Pokud by zpracovatel údaje přenášel mimo EU, děje se tak jen se zárukami podle GDPR (rozhodnutí o odpovídající ochraně nebo standardní smluvní doložky).</p>
+
+        <h3>6. Na stánku</h3>
+        <p>Když na stánku zrovna nejde internet, údaje se dočasně uloží v zařízení stánku a odešlou se, jakmile bude připojení. Po odeslání je ze zařízení smažeme.</p>
+
+        <h3>7. Výsledek kvízu</h3>
+        <p>Výsledek je jen orientační doporučení podle tvých odpovědí. Nemá pro tebe žádné právní účinky a nijak neovlivňuje přijímací řízení.</p>
+
+        <h3>8. Je ti méně než 15 let?</h3>
+        <p>Pak za tebe musí souhlas udělit rodič nebo zákonný zástupce (§ 7 zákona č. 110/2019 Sb.). E-mail ti v takovém případě přes kvíz poslat nemůžeme. Zastav se u stánku a info ti dáme osobně.</p>
+
+        <h3>9. Tvoje práva</h3>
+        <ul>
+          <li>Souhlas můžeš kdykoli odvolat: odpověz na kterýkoli náš e-mail, nebo napiš na <span class="sel">dpo.vstecb@fairdata.cz</span>. Odvolání nemá vliv na zpracování před ním.</li>
+          <li>Máš právo na přístup k údajům, jejich opravu, výmaz, omezení zpracování a přenositelnost.</li>
+          <li>Můžeš podat stížnost u Úřadu pro ochranu osobních údajů, Pplk. Sochora 27, 170 00 Praha 7, www.uoou.gov.cz.</li>
+        </ul>
+        <p>Svá práva uplatníš u pověřence na <span class="sel">dpo.vstecb@fairdata.cz</span> nebo písemně na adrese VŠTE.</p>
+
+        <div class="row mid"><button class="cta" id="gdprBack" type="button">Zpět</button></div>
+      </article>
     </section>
 
     <section class="screen" id="s-leads" hidden>
@@ -455,7 +533,7 @@ tr:last-child td{border-bottom:0}
           <h2>Sebrané kontakty</h2>
           <p class="lead" id="leadCount"></p>
         </div>
-        <div class="box"><div class="scroll"><table><thead><tr><th>Čas</th><th>E-mail</th><th>Obor</th><th>Match</th></tr></thead><tbody id="leadRows"></tbody></table></div></div>
+        <div class="box"><div class="scroll"><table><thead><tr><th>Čas</th><th>Kontakt</th><th>Obor</th><th>Novinky</th></tr></thead><tbody id="leadRows"></tbody></table></div></div>
         <textarea class="csv" id="csvBox" readonly aria-label="CSV export"></textarea>
         <div class="row">
           <button class="cta" id="copyCsv">Kopírovat CSV</button>
@@ -566,6 +644,20 @@ var QUIZ = {
 
 var IDLE_MS = 90000, STORE_KEY = "vste-matcher-leads", DAY_KEY = "vste-matcher-day";
 
+/* ====================== ODESÍLÁNÍ A GDPR — NASTAVENÍ ======================
+   url:  adresa webové aplikace z Google Apps Scriptu (návod v README, kód v backend/apps-script.gs).
+         Dokud je prázdná, kontakty zůstávají jen v zařízení stánku (export přes obsluhu, 5× klik na logo).
+   klic: stejný řetězec jako KLIC v Apps Scriptu. Není to heslo (je vidět ve zdrojáku), jen síto na náhodný spam.
+   Při změně textu zásad nebo souhlasu zvyš verzi. */
+var ODESILANI = { url: "", klic: "vste-matcher-2026" };
+var ZASADY = {
+  verze: "7. 10. 2026",
+  uchovatDo: "31. 10. 2027",
+  zpracovatel: "Google Ireland Limited (služby Google Workspace)",
+  souhlas: "Je mi alespoň 15 let a souhlasím se zpracováním svých osobních údajů (jméno, příjmení, e-mail a výsledek kvízu) Vysokou školou technickou a ekonomickou v Českých Budějovicích za účelem zaslání výsledku a informací o doporučeném oboru.",
+  novinky: "Chci dostávat i novinky o přijímačkách, dnech otevřených dveří a akcích VŠTE."
+};
+
 /* ====================== STAV + DOM ====================== */
 
 var S = null, el = {};
@@ -573,11 +665,25 @@ var S = null, el = {};
  "pips","undo","restart","dayCount","matchfx","mEmo","mName",
  "arc","pct","rLevel","rName","rTags","rWhy","rRank","rDesc","rRunner","leadForm","email",
  "consent","formErr","again","retry","done","brand","leadCount","leadRows","csvBox","copyCsv",
- "wipe","closeLeads","wipeNote","fx","app","stage","theme"]
+ "wipe","closeLeads","wipeNote","fx","app","stage","theme",
+ "firstName","lastName","news","hp","openGdpr","gdprBack","gdprVer","gdprDo","gdprZprac","thanksText","s-gdpr"]
  .forEach(function(id){ el[id] = document.getElementById(id); });
 
-var SCREENS = ["s-start","s-quiz","s-result","s-nomatch","s-thanks","s-leads"];
+var SCREENS = ["s-start","s-quiz","s-result","s-nomatch","s-thanks","s-leads","s-gdpr"];
 var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Všechny odložené kroky (přechod na další otázku, odhalení matche…) jdou přes pozdeji(),
+   aby je restart mohl zrušit. Jinak „Znovu“ uprostřed animace vrátilo starou obrazovku. */
+var casovace = [];
+function pozdeji(fn, ms){
+  var id = setTimeout(function(){
+    casovace = casovace.filter(function(x){ return x !== id; });
+    fn();
+  }, ms);
+  casovace.push(id);
+  return id;
+}
+function zrusCasovace(){ casovace.forEach(clearTimeout); casovace = []; }
 
 function show(id){
   SCREENS.forEach(function(s){ el[s].hidden = (s !== id); });
@@ -606,6 +712,10 @@ function bumpDay(){
 }
 
 function renderStart(){
+  zrusCasovace();
+  el.matchfx.hidden = true;
+  parts.length = 0;
+  uvolniVidea(); el.ans.innerHTML = ""; el.ans.className = "";
   S = newState();
   el.dayCount.innerHTML = "Dnes matchnuto: <b></b>";
   el.dayCount.querySelector("b").textContent = dayStats().n;
@@ -629,7 +739,7 @@ function pickLevel(btn, id){
   if (S.locked) return;
   S.locked = true;
   btn.classList.add("picked");
-  setTimeout(function(){
+  pozdeji(function(){
     S.level = id; S.locked = false;
     QUIZ[id].order.forEach(function(k){ S.pts[k] = 0; });
     el.restart.hidden = false;
@@ -739,7 +849,7 @@ function vyber(i, btn){
   S.volby[S.q] = i;
   btn.classList.add("chosen");
   el.ans.classList.add("done");
-  setTimeout(dalsi, reduce ? 50 : 700);
+  pozdeji(dalsi, reduce ? 50 : 700);
 }
 
 function preskoc(){
@@ -747,7 +857,7 @@ function preskoc(){
   S.locked = true;
   S.volby[S.q] = null;
   el.ans.classList.add("done");
-  setTimeout(dalsi, reduce ? 50 : 250);
+  pozdeji(dalsi, reduce ? 50 : 250);
 }
 
 function dalsi(){
@@ -797,8 +907,8 @@ function matchReveal(top, done){
   el.mEmo.textContent = p.e; el.mName.textContent = p.n;
   if (reduce){ done(); return; }
   el.matchfx.hidden = false;
-  setTimeout(burst, 780);
-  setTimeout(function(){ el.matchfx.hidden = true; done(); }, 2050);
+  pozdeji(burst, 780);
+  pozdeji(function(){ el.matchfx.hidden = true; done(); }, 2050);
 }
 
 function renderResult(){
@@ -819,7 +929,7 @@ function renderResult(){
   var b2 = document.createElement("strong"); b2.textContent = s.n;
   el.rRunner.appendChild(a); el.rRunner.appendChild(b2);
 
-  el.email.value = ""; el.consent.checked = false; el.formErr.hidden = true;
+  vycistiFormular();
   el.undo.hidden = true; el.restart.hidden = false;
   show("s-result");
 
@@ -877,29 +987,79 @@ function tick(){
   else { fxCtx.clearRect(0, 0, innerWidth, innerHeight); fxRun = false; }
 }
 
-/* ====================== LEADY ====================== */
+/* ====================== KONTAKTY (GDPR) ====================== */
 
 function loadLeads(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); } catch (e){ return []; } }
 function saveLeads(l){ try { localStorage.setItem(STORE_KEY, JSON.stringify(l)); } catch (e){} }
 
+function vycistiFormular(){
+  [el.firstName, el.lastName, el.email].forEach(function(i){ i.value = ""; i.removeAttribute("aria-invalid"); });
+  el.consent.checked = false; el.news.checked = false; el.hp.value = "";
+  el.formErr.hidden = true;
+}
+function chyba(text, pole){
+  el.formErr.textContent = text; el.formErr.hidden = false;
+  if (pole){ pole.setAttribute("aria-invalid", "true"); pole.focus(); }
+}
+function noveId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
 el.leadForm.addEventListener("submit", function(ev){
   ev.preventDefault();
+  [el.firstName, el.lastName, el.email].forEach(function(i){ i.removeAttribute("aria-invalid"); });
+  var jmeno = el.firstName.value.trim().replace(/\s+/g, " ");
+  var prijmeni = el.lastName.value.trim().replace(/\s+/g, " ");
   var mail = el.email.value.trim();
-  if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(mail)){
-    el.formErr.textContent = "Zkontroluj e-mail — chybí mu zavináč nebo koncovka.";
-    el.formErr.hidden = false; el.email.focus(); return;
-  }
-  if (!el.consent.checked){
-    el.formErr.textContent = "Bez zaškrtnutého souhlasu ti e-mail poslat nemůžeme.";
-    el.formErr.hidden = false; el.consent.focus(); return;
-  }
+  if (jmeno.length < 2) return chyba("Napiš svoje jméno.", el.firstName);
+  if (prijmeni.length < 2) return chyba("Napiš svoje příjmení.", el.lastName);
+  if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(mail)) return chyba("Zkontroluj e-mail, chybí mu zavináč nebo koncovka.", el.email);
+  if (!el.consent.checked) return chyba("Bez souhlasu se zpracováním údajů ti výsledek poslat nemůžeme.", el.consent);
   el.formErr.hidden = true;
-  var p = PROGRAMS[S.result.top], list = loadLeads();
-  list.push({ts:new Date().toISOString(), email:mail, program:p.n, level:p.l,
-             pct:S.result.pct});
+
+  // Robot vyplnil skryté pole: tváříme se, že je hotovo, ale nic neukládáme.
+  if (el.hp.value){ thanks(mail); return; }
+
+  var r = S.result, p = PROGRAMS[r.top], d2 = PROGRAMS[r.second], ted = new Date().toISOString();
+  var list = loadLeads();
+  list.push({
+    id: noveId(), cas: ted,
+    jmeno: jmeno, prijmeni: prijmeni, email: mail,
+    obor: p.n, uroven: p.l, shoda: r.pct, druhyObor: d2.n,
+    popis: p.d, tagy: p.t.join(", "),
+    novinky: el.news.checked,
+    souhlas: { verze: ZASADY.verze, cas: ted, text: ZASADY.souhlas, novinkyText: el.news.checked ? ZASADY.novinky : "" },
+    zdroj: "VŠTE Matcher",
+    odeslano: false
+  });
   saveLeads(list);
-  thanks();
+  thanks(mail);
+  odesliFrontu();
 });
+
+/* Fronta k odeslání: když na stánku vypadne internet, kontakt počká v zařízení
+   a odejde při dalším pokusu. Po úspěšném odeslání se ze zařízení smaže. */
+var odesilam = false;
+function odesliFrontu(){
+  if (!ODESILANI.url || odesilam || !window.fetch) return;
+  var cekajici = loadLeads().filter(function(l){ return !l.odeslano; });
+  if (!cekajici.length) return;
+  odesilam = true;
+  (function dalsiKontakt(i){
+    if (i >= cekajici.length){ odesilam = false; return; }
+    var l = cekajici[i];
+    fetch(ODESILANI.url, {
+      method: "POST",
+      // text/plain = žádný CORS preflight, Apps Script si JSON přečte sám
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ klic: ODESILANI.klic, kontakt: l })
+    }).then(function(res){ return res.json(); }).then(function(j){
+      if (!j || !j.ok) throw new Error(j && j.chyba || "server");
+      saveLeads(loadLeads().filter(function(x){ return x.id !== l.id; }));
+      dalsiKontakt(i + 1);
+    }).catch(function(){ odesilam = false; });   // zkusí se znovu později
+  })(0);
+}
+addEventListener("online", odesliFrontu);
+setInterval(odesliFrontu, 60000);
 
 function fmtTime(iso){
   var d = new Date(iso); function z(n){ return (n < 10 ? "0" : "") + n; }
@@ -908,9 +1068,10 @@ function fmtTime(iso){
 var wipeArmed = false;
 function renderLeads(){
   var list = loadLeads();
-  el.leadCount.textContent = list.length
-    ? list.length + " záznamů uložených v tomhle zařízení. Data neopouštějí prohlížeč."
-    : "Zatím žádný kontakt. Data zůstávají jen v tomhle prohlížeči.";
+  var info = ODESILANI.url
+    ? "Odesílání je zapnuté. Tady jsou jen kontakty, které ještě čekají na odeslání (po odeslání se ze zařízení mažou)."
+    : "Odesílání zatím není nastavené, kontakty zůstávají jen v tomhle zařízení. Exportuj je přes CSV.";
+  el.leadCount.textContent = (list.length ? list.length + " záznamů v zařízení. " : "V zařízení nejsou žádné kontakty. ") + info;
   el.leadRows.innerHTML = "";
   if (!list.length){
     var tr0 = document.createElement("tr"), td0 = document.createElement("td");
@@ -918,16 +1079,16 @@ function renderLeads(){
     tr0.appendChild(td0); el.leadRows.appendChild(tr0);
   } else list.slice().reverse().forEach(function(l){
     var tr = document.createElement("tr");
-    [fmtTime(l.ts), l.email, l.program, l.pct + " %"].forEach(function(v){
+    [fmtTime(l.cas), l.jmeno + " " + l.prijmeni + " · " + l.email, l.obor + " (" + l.uroven + ")", l.novinky ? "ano" : "ne"].forEach(function(v){
       var td = document.createElement("td"); td.textContent = v; tr.appendChild(td);
     });
     el.leadRows.appendChild(tr);
   });
-  var rows = [["cas","email","program","uroven","match"]].concat(list.map(function(l){
-    return [l.ts, l.email, l.program, l.level, l.pct];
+  var rows = [["cas","jmeno","prijmeni","email","obor","uroven","shoda","druhy_obor","novinky","verze_souhlasu"]].concat(list.map(function(l){
+    return [l.cas, l.jmeno, l.prijmeni, l.email, l.obor, l.uroven, l.shoda, l.druhyObor, l.novinky ? "ano" : "ne", l.souhlas && l.souhlas.verze];
   }));
   el.csvBox.value = rows.map(function(r){
-    return r.map(function(c){ return '"' + String(c).replace(/"/g, '""') + '"'; }).join(";");
+    return r.map(function(c){ return '"' + String(c == null ? "" : c).replace(/"/g, '""') + '"'; }).join(";");
   }).join("\n");
   el.wipeNote.hidden = true; wipeArmed = false;
   el.undo.hidden = true; el.restart.hidden = false;
@@ -949,10 +1110,28 @@ el.copyCsv.addEventListener("click", function(){
 });
 el.closeLeads.addEventListener("click", function(){ renderStart(); });
 
+/* ====================== ZÁSADY ====================== */
+el.gdprVer.textContent = ZASADY.verze;
+el.gdprDo.textContent = ZASADY.uchovatDo;
+el.gdprZprac.textContent = ZASADY.zpracovatel;
+var zGdprNa = null;   // kam se vrátit
+function otevriZasady(){
+  zGdprNa = el["s-result"].hidden ? null : "s-result";
+  idleOff = true; clearTimeout(idle);
+  show("s-gdpr");
+}
+el.openGdpr.addEventListener("click", otevriZasady);
+el.gdprBack.addEventListener("click", function(){
+  idleOff = false; resetIdle();
+  if (zGdprNa){ show(zGdprNa); el.leadForm.scrollIntoView({block:"start"}); }
+  else renderStart();
+});
+
 /* ====================== DÍKY + AUTORESET ====================== */
 
 // Poděkování zůstane, dokud ho obsluha nezavře; jinak ho vrátí na začátek IDLE_MS.
-function thanks(){
+function thanks(mail){
+  el.thanksText.textContent = "Na " + mail + " ti pošleme tvůj obor a info o studiu na VŠTE. Kdyby nedorazil, mrkni do spamu nebo hromadné pošty.";
   el.undo.hidden = true; el.restart.hidden = false;
   show("s-thanks"); burst();
 }
@@ -970,8 +1149,8 @@ function resetIdle(){
 ["pointerdown","keydown","wheel","touchstart"].forEach(function(e){
   addEventListener(e, resetIdle, {passive:true});
 });
-el.email.addEventListener("focus", function(){ idleOff = true; clearTimeout(idle); });
-el.email.addEventListener("blur", function(){ idleOff = false; resetIdle(); });
+el.leadForm.addEventListener("focusin", function(){ idleOff = true; clearTimeout(idle); });
+el.leadForm.addEventListener("focusout", function(){ idleOff = false; resetIdle(); });
 
 /* ====================== OVLÁDÁNÍ ====================== */
 
@@ -1039,6 +1218,8 @@ el.brand.addEventListener("click", function(){
 /* ====================== START ====================== */
 renderStart();
 resetIdle();
+if (location.hash === "#zasady") otevriZasady();
+odesliFrontu();
 
 })();
 </script>
