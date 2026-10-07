@@ -133,7 +133,8 @@ připojení vrátí (zkouší to každou minutu).
    Pokud škola Google Workspace nemá, viz „Varianta Microsoft 365“ níž.
 2. Vytvoř novou Google tabulku, třeba „VŠTE Matcher — kontakty“. Nesdílej ji s nikým mimo pověřené lidi.
 3. V tabulce: **Rozšíření → Apps Script**. Smaž ukázkový kód a vlož celý obsah `backend/apps-script.gs`.
-4. Nahoře v souboru vyplň `ODPOVEDI_NA` (např. adresu studijního oddělení) a zkontroluj `KLIC`.
+4. Nahoře v souboru vyplň `ODPOVEDI_NA` (např. adresu studijního oddělení), do `UPOZORNENI_NA` dej schránku,
+   kam má po každém vyplnění přijít upozornění s kontaktem a oborem (víc adres odděl čárkou), a zkontroluj `KLIC`.
 5. Vyber funkci **`test`** a dej **Spustit**. Google se zeptá na oprávnění (tabulka + odesílání pošty),
    povol je. Do schránky ti má přijít testovací e-mail. Takhle bude vypadat i e-mail uchazeče.
 6. Vyber funkci **`nastavUklid`** a jednou ji spusť. Tím se zapne denní mazání starých záznamů (doba uchování podle zásad).

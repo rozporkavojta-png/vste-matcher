@@ -14,6 +14,7 @@ const KLIC = 'vste-matcher-2026';           // stejný jako ODESILANI.klic v ind
 const LIST = 'Kontakty';
 const ODESILATEL_JMENO = 'VŠTE Matcher';
 const ODPOVEDI_NA = '';                      // např. studijni@vstecb.cz — kam půjdou odpovědi a odvolání souhlasu
+const UPOZORNENI_NA = '';                    // kam poslat upozornění na každý nový kontakt (víc adres odděl čárkou); prázdné = neposílat
 const ODKAZ_ZASADY = 'https://rozporkavojta-png.github.io/vste-matcher/#zasady';
 const ODKAZ_WEB = 'https://www.vstecb.cz';
 const KONEC_UCELU = new Date('2027-10-31T23:59:59+01:00');   // stejné datum jako ZASADY.uchovatDo
@@ -46,6 +47,7 @@ function doPost(e) {
 
     posliVysledek(k);
     list().getRange(radek, SLOUPCE.indexOf('mail_odeslan') + 1).setValue(new Date());
+    if (UPOZORNENI_NA) posliUpozorneni(k);
     return vystup({ ok: true });
   } catch (err) {
     return vystup({ ok: false, chyba: String(err) });
@@ -87,6 +89,31 @@ function posliVysledek(k) {
   const opt = { to: k.email, subject: predmet, htmlBody: html, body: text, name: ODESILATEL_JMENO };
   if (ODPOVEDI_NA) opt.replyTo = ODPOVEDI_NA;
   MailApp.sendEmail(opt);
+}
+
+/** Upozornění pro tým VŠTE: kdo se ozval a jaký obor mu vyšel. */
+function posliUpozorneni(k) {
+  const radky = [
+    ['Jméno', k.jmeno + ' ' + k.prijmeni],
+    ['E-mail', k.email],
+    ['Obor', k.obor + ' (' + k.uroven + ')'],
+    ['Shoda', k.shoda + ' %'],
+    ['Druhá shoda', k.druhyObor || ''],
+    ['Chce novinky', k.novinky ? 'ano' : 'ne'],
+    ['Souhlas', 'verze ' + k.souhlas.verze + ', ' + k.souhlas.cas]
+  ];
+  const html = '<table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">' +
+    radky.map(r => '<tr><td style="padding:4px 12px 4px 0;color:#5F5864">' + esc(r[0]) + '</td><td style="padding:4px 0"><b>' + esc(r[1]) + '</b></td></tr>').join('') +
+    '</table><p style="font-family:Arial,sans-serif;font-size:12px;color:#5F5864">Všechny kontakty jsou v tabulce: ' +
+    SpreadsheetApp.getActiveSpreadsheet().getUrl() + '<br>Osobní údaje: nepřeposílej mimo pověřené lidi a e-mail smaž, až ho nebudeš potřebovat.</p>';
+  MailApp.sendEmail({
+    to: UPOZORNENI_NA,
+    subject: 'Matcher: ' + k.jmeno + ' ' + k.prijmeni + ' → ' + k.obor,
+    htmlBody: html,
+    body: radky.map(r => r[0] + ': ' + r[1]).join('\n'),
+    name: ODESILATEL_JMENO,
+    replyTo: k.email
+  });
 }
 
 /** Smaže záznamy po uplynutí doby uchování (bod 4 zásad). Spouští se denně. */
