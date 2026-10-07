@@ -50,7 +50,7 @@ Jedna odpověď vypadá takhle:
 
 ```js
 {t:"Propočítám ztrátu produktivity v korunách za minutu.",  // text na kartě
- m:"krabs-money.webp",     // soubor ze složky memes/ (.webp/.gif = živý GIF)
+ m:"krabs-money.mp4",      // soubor ze složky memes/ (.mp4 = živý meme, vedle musí být stejnojmenný .jpg náhled)
  ef:"zoom",                 // pohyb jen u statických obrázků: zoom | shake | press | tilt | slide | bounce
  e:"🧮",                    // záložní emoji, když se obrázek nenačte
  w:{BA:3, PE:2},            // kolik bodů komu odpověď dá
@@ -59,7 +59,10 @@ Jedna odpověď vypadá takhle:
 
 - **Jiný meme:** nahraď soubor v `memes/` nebo přepiš `m`.
 - **Jiný pohyb:** přepiš `ef`. Pohyb je schválně jemný, aby byl obrázek vidět celý.
-- **GIFy a samolepky z GIPHY:** ulož `.gif` nebo `.webp` do `memes/` a jméno dej do `m`. Hýbou se samy.
+- **GIFy z GIPHY:** stáhni MP4 verzi (`https://media.giphy.com/media/<ID>/giphy.mp4`), převeď ji a ulož do `memes/` spolu s náhledem:
+  `ffmpeg -i giphy.mp4 -an -vf "scale='min(480,iw)':-2,fps=min(source_fps\,24),format=yuv420p" -c:v libx264 -crf 27 -movflags +faststart jmeno.mp4`
+  `ffmpeg -i jmeno.mp4 -frames:v 1 -q:v 4 jmeno.jpg`
+  MP4 telefon dekóduje hardwarově, takže nelaguje jako animované WebP/GIF (ty fungují taky, ale sekají se).
 - **Vážná otázka jako vtipná (nebo naopak):** přepiš `tone`.
 - **Jiný obor:** obory jsou v `PROGRAMS` nahoře.
 - **Návrat na úvod, když na stánku nikdo nehraje:** `IDLE_MS` (teď 90 s bez dotyku).
@@ -74,25 +77,29 @@ Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
 
 ## Zdroje GIFů
 
-Živé GIFy jsou z GIPHY, uložené jako `.webp` ve `memes/`. Pro schválení licencí:
+Živé GIFy jsou z GIPHY, uložené jako `.mp4` (+ náhled `.jpg`) ve `memes/`. Pro schválení licencí:
 
 | Soubor | Odpověď | GIPHY |
 |---|---|---|
-| `krabs-money.webp` | 1A propočítám ztrátu | https://giphy.com/gifs/SOmjomEnNHsrK |
-| `kabely-chaos.webp` | 1B zkontroluju kabely | https://giphy.com/gifs/blHeoPXYVzsh8hbEUk |
-| `yapping-telefon.webp` | 1C volám providerovi | https://giphy.com/gifs/BOor7jsYY2JGa8cvtY |
-| `stonks.webp` | 3A vidět do budoucnosti | https://giphy.com/gifs/XDAY1NNG2VvobAp9o0 |
-| `bryle-zkoumam.webp` | 3B rentgenový zrak | https://giphy.com/gifs/cM2CN5U99VVWdDGcSA |
-| `neuron-activation.webp` | 3C telepatie | https://giphy.com/gifs/n6o5muKaBkYqP0eTUC |
-| `superman-poza.webp` | 3D opravit motor | https://giphy.com/gifs/kCd6XpV0TOMmmjqvo8 |
-| `auto-chudy.webp` | 3E teleportace zboží (auto na chůdách přes zácpu) | https://giphy.com/gifs/CZDVvQn78njFu |
-| `vlk-mikrofon.webp` | Ing. 2A Vlk z Wall Street (Leo s mikrofonem) | https://giphy.com/gifs/Vi4MRwWi9sYpi |
-| `pepe-silvia.webp` | Ing. 2B Sherlock Holmes | https://giphy.com/gifs/icgArcntfH5C0 |
-| `stark-endgame.webp` | Ing. 2C Tony Stark (Endgame, pohled na Steva) | https://giphy.com/gifs/NDzVwpclOqiprMcfLZ |
-| `ted-profesor.webp` | Ing. 2D Ted Mosby | https://giphy.com/gifs/kvcqO3ojVie2I |
-| `sparrow-pristav.webp` | Ing. 2E kapitán lodi (Jack Sparrow připlouvá do přístavu) | https://giphy.com/gifs/o0eOCNkn7cSD6 |
+| `krabs-money.mp4` | 1A propočítám ztrátu | https://giphy.com/gifs/SOmjomEnNHsrK |
+| `kabely-chaos.mp4` | 1B zkontroluju kabely | https://giphy.com/gifs/blHeoPXYVzsh8hbEUk |
+| `yapping-telefon.mp4` | 1C volám providerovi | https://giphy.com/gifs/BOor7jsYY2JGa8cvtY |
+| `stonks.mp4` | 3A vidět do budoucnosti | https://giphy.com/gifs/XDAY1NNG2VvobAp9o0 |
+| `bryle-zkoumam.mp4` | 3B rentgenový zrak | https://giphy.com/gifs/cM2CN5U99VVWdDGcSA |
+| `neuron-activation.mp4` | 3C telepatie | https://giphy.com/gifs/n6o5muKaBkYqP0eTUC |
+| `superman-poza.mp4` | 3D opravit motor | https://giphy.com/gifs/kCd6XpV0TOMmmjqvo8 |
+| `auto-chudy.mp4` | 3E teleportace zboží (auto na chůdách přes zácpu) | https://giphy.com/gifs/CZDVvQn78njFu |
+| `vlk-mikrofon.mp4` | Ing. 2A Vlk z Wall Street (Leo s mikrofonem) | https://giphy.com/gifs/Vi4MRwWi9sYpi |
+| `pepe-silvia.mp4` | Ing. 2B Sherlock Holmes | https://giphy.com/gifs/icgArcntfH5C0 |
+| `stark-endgame.mp4` | Ing. 2C Tony Stark (Endgame, pohled na Steva) | https://giphy.com/gifs/NDzVwpclOqiprMcfLZ |
+| `ted-profesor.mp4` | Ing. 2D Ted Mosby | https://giphy.com/gifs/kvcqO3ojVie2I |
+| `sparrow-pristav.mp4` | Ing. 2E kapitán lodi (Jack Sparrow připlouvá do přístavu) | https://giphy.com/gifs/o0eOCNkn7cSD6 |
 
 Řádky bez „Ing." jsou bakalářské otázky.
+
+## Světlý režim
+
+Appka se řídí nastavením telefonu (světlý / tmavý). Tlačítkem ☀ / ☾ v liště se dá přepnout ručně, volba se pamatuje v prohlížeči.
 
 ## E-maily
 
