@@ -126,6 +126,42 @@ do Apps Scriptu → ten ho zapíše do tabulky a pošle uchazeči e-mail s výsl
 ze zařízení smaže. Když na stánku nejde internet, kontakt počká a odešle se sám, jakmile se
 připojení vrátí (zkouší to každou minutu).
 
+### Odesílání přes Postmark
+
+E-maily posíláme přes [Postmark](https://postmarkapp.com). Postmark se nedá volat přímo z webu,
+jeho token by viděl každý v prohlížeči. Proto ho volá Apps Script, kde je token schovaný.
+Cesta je: appka → Apps Script (uloží do tabulky) → Postmark (pošle e-mail).
+
+**A. Postmark (účet a ověření adresy)**
+
+1. Zaregistruj se na postmarkapp.com a vytvoř **Server** „VŠTE Matcher“. E-maily půjdou
+   přes jeho výchozí transakční stream (`outbound`).
+2. **Sender Signatures → Add Domain** a zadej doménu, ze které se bude posílat (např. `vstecb.cz`).
+   Postmark ukáže dva DNS záznamy (DKIM a Return-Path). Ty musí přidat **IT školy** do DNS domény.
+   Bez nich můžou e-maily padat do spamu. Na rychlé vyzkoušení stačí **Add Sender Signature**
+   s jednou adresou, kterou potvrdíš kliknutím v e-mailu.
+3. Nový účet je v **testovacím režimu**: posílá jen na adresy z ověřené domény.
+   Klikni na **Request approval** a popiš použití, třeba: „Transakční e-maily s výsledkem
+   oborového kvízu, které si uchazeč sám vyžádá a odsouhlasí na stánku VŠTE na veletrhu Gaudeamus.“
+   Schválení trvá obvykle do 24 hodin v pracovní dny.
+4. V serveru otevři **API Tokens** a zkopíruj **Server API token**. Nikam ho nevkládej do kódu ani do chatu.
+
+**B. Google tabulka a Apps Script**
+
+5. Udělej kroky 2–3 z návodu „Nasazení“ níž (tabulka, Rozšíření → Apps Script, vložit `backend/apps-script.gs`).
+6. V Apps Scriptu: **Nastavení projektu (ozubené kolo) → Vlastnosti skriptu → Přidat vlastnost**,
+   název `POSTMARK_TOKEN`, hodnota = token z kroku 4.
+7. Nahoře v kódu vyplň `POSTMARK_OD` (ověřená adresa z kroku 2), `ODPOVEDI_NA` a `UPOZORNENI_NA`.
+8. Spusť funkci **`test`**, povol oprávnění (tabulka a „připojení k externí službě“).
+   Přijde ti testovací e-mail a v Postmarku ho uvidíš v **Activity**.
+   V testovacím režimu musí být tvoje adresa na ověřené doméně.
+9. Pokračuj kroky 6–9 z „Nasazení“ (`nastavUklid`, nasadit jako webovou aplikaci, adresu `/exec` dát do `index.html`).
+
+**GDPR u Postmarku**: data ukládá v USA (provozovatel AC PM LLC, součást ActiveCampaign).
+Smlouva o zpracování (DPA) se standardními smluvními doložkami je součástí jejich obchodních podmínek,
+podepisovat se nic nemusí. Obsah e-mailů maže po 45 dnech. Zásady v appce Postmark uvádějí jako zpracovatele.
+**Pověřenec VŠTE musí přenos do USA odsouhlasit** (posoudí, jestli stačí doložky, nebo chce EU službu).
+
 ### Nasazení (cca 15 minut)
 
 1. Přihlas se **školním Google účtem VŠTE**, ne soukromým Gmailem (kvůli GDPR a limitům:

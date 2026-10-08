@@ -15,6 +15,10 @@ const LIST = 'Kontakty';
 const ODESILATEL_JMENO = 'VŠTE Matcher';
 const ODPOVEDI_NA = '';                      // např. studijni@vstecb.cz, sem půjdou odpovědi a odvolání souhlasu
 const ODESILAT_Z = '';                       // z jaké adresy e-maily odcházejí; prázdné = z účtu, pod kterým skript běží. Jiná adresa musí být v Gmailu přidaná jako „Odesílat poštu jako“ (návod v README)
+// Postmark: když je ve Vlastnostech skriptu uložený POSTMARK_TOKEN, e-maily jdou přes Postmark z adresy POSTMARK_OD.
+// Token nikdy nepiš sem do kódu (Nastavení projektu → Vlastnosti skriptu). Návod v README.
+const POSTMARK_OD = '';                      // ověřená adresa v Postmarku (Sender Signature), např. matcher@vstecb.cz
+const POSTMARK_STREAM = 'outbound';          // transakční stream; novinky by patřily do zvláštního Broadcast streamu
 const UPOZORNENI_NA = '';                    // kam poslat upozornění na každý nový kontakt (víc adres odděl čárkou); prázdné = neposílat
 const ODKAZ_ZASADY = 'https://rozporkavojta-png.github.io/vste-matcher/#zasady';
 const ODKAZ_WEB = 'https://www.vstecb.cz';
@@ -148,8 +152,10 @@ function test() {
   });
 }
 
-/** Pošle e-mail. S vyplněným ODESILAT_Z jde přes Gmail z té adresy, jinak přes MailApp z účtu skriptu. */
+/** Pošle e-mail: přes Postmark (je-li nastavený token), jinak přes Gmail alias (ODESILAT_Z), jinak přes MailApp. */
 function posli(opt) {
+  const token = PropertiesService.getScriptProperties().getProperty('POSTMARK_TOKEN');
+  if (token) { posliPostmark(token, opt); return; }
   if (!ODESILAT_Z) { MailApp.sendEmail(opt); return; }
   if (GmailApp.getAliases().indexOf(ODESILAT_Z) === -1) {
     throw new Error('Adresa ' + ODESILAT_Z + ' není v Gmailu nastavená jako „Odesílat poštu jako“.');
@@ -157,6 +163,33 @@ function posli(opt) {
   const o = { htmlBody: opt.htmlBody, name: opt.name, from: ODESILAT_Z };
   if (opt.replyTo) o.replyTo = opt.replyTo;
   GmailApp.sendEmail(opt.to, opt.subject, opt.body, o);
+}
+
+function posliPostmark(token, opt) {
+  if (!POSTMARK_OD) throw new Error('Vyplň POSTMARK_OD (ověřenou adresu v Postmarku).');
+  const zprava = {
+    From: (opt.name ? '"' + opt.name.replace(/"/g, '') + '" ' : '') + '<' + POSTMARK_OD + '>',
+    To: opt.to,
+    Subject: opt.subject,
+    HtmlBody: opt.htmlBody,
+    TextBody: opt.body,
+    MessageStream: POSTMARK_STREAM,
+    Tag: 'vste-matcher',
+    TrackOpens: false,          // bez sledování otevření a kliknutí (méně osobních údajů)
+    TrackLinks: 'None'
+  };
+  if (opt.replyTo) zprava.ReplyTo = opt.replyTo;
+  const res = UrlFetchApp.fetch('https://api.postmarkapp.com/email', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'X-Postmark-Server-Token': token, 'Accept': 'application/json' },
+    payload: JSON.stringify(zprava),
+    muteHttpExceptions: true
+  });
+  const odp = JSON.parse(res.getContentText() || '{}');
+  if (res.getResponseCode() !== 200 || odp.ErrorCode) {
+    throw new Error('Postmark ' + res.getResponseCode() + ': ' + (odp.Message || res.getContentText()));
+  }
 }
 
 function list() {
