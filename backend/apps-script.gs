@@ -14,6 +14,7 @@ const KLIC = 'vste-matcher-2026';           // stejný jako ODESILANI.klic v ind
 const LIST = 'Kontakty';
 const ODESILATEL_JMENO = 'VŠTE Matcher';
 const ODPOVEDI_NA = '';                      // např. studijni@vstecb.cz, sem půjdou odpovědi a odvolání souhlasu
+const ODESILAT_Z = '';                       // z jaké adresy e-maily odcházejí; prázdné = z účtu, pod kterým skript běží. Jiná adresa musí být v Gmailu přidaná jako „Odesílat poštu jako“ (návod v README)
 const UPOZORNENI_NA = '';                    // kam poslat upozornění na každý nový kontakt (víc adres odděl čárkou); prázdné = neposílat
 const ODKAZ_ZASADY = 'https://rozporkavojta-png.github.io/vste-matcher/#zasady';
 const ODKAZ_WEB = 'https://www.vstecb.cz';
@@ -88,7 +89,7 @@ function posliVysledek(k) {
     '\n\nSouhlas můžeš kdykoli odvolat odpovědí na tento e-mail nebo na dpo.vstecb@fairdata.cz.\nZásady: ' + ODKAZ_ZASADY;
   const opt = { to: k.email, subject: predmet, htmlBody: html, body: text, name: ODESILATEL_JMENO };
   if (ODPOVEDI_NA) opt.replyTo = ODPOVEDI_NA;
-  MailApp.sendEmail(opt);
+  posli(opt);
 }
 
 /** Upozornění pro tým VŠTE: kdo se ozval a jaký obor mu vyšel. */
@@ -106,7 +107,7 @@ function posliUpozorneni(k) {
     radky.map(r => '<tr><td style="padding:4px 12px 4px 0;color:#5F5864">' + esc(r[0]) + '</td><td style="padding:4px 0"><b>' + esc(r[1]) + '</b></td></tr>').join('') +
     '</table><p style="font-family:Arial,sans-serif;font-size:12px;color:#5F5864">Všechny kontakty jsou v tabulce: ' +
     SpreadsheetApp.getActiveSpreadsheet().getUrl() + '<br>Osobní údaje: nepřeposílej mimo pověřené lidi a e-mail smaž, až ho nebudeš potřebovat.</p>';
-  MailApp.sendEmail({
+  posli({
     to: UPOZORNENI_NA,
     subject: 'Matcher: ' + k.jmeno + ' ' + k.prijmeni + ' → ' + k.obor,
     htmlBody: html,
@@ -145,6 +146,17 @@ function test() {
     jmeno: 'Test', email: Session.getActiveUser().getEmail(), obor: 'Podniková ekonomika', uroven: 'Bakalářské studium',
     shoda: 91, popis: 'Testovací e-mail z VŠTE Matcheru.', tagy: 'Finance, Management', druhyObor: 'Business Analytik'
   });
+}
+
+/** Pošle e-mail. S vyplněným ODESILAT_Z jde přes Gmail z té adresy, jinak přes MailApp z účtu skriptu. */
+function posli(opt) {
+  if (!ODESILAT_Z) { MailApp.sendEmail(opt); return; }
+  if (GmailApp.getAliases().indexOf(ODESILAT_Z) === -1) {
+    throw new Error('Adresa ' + ODESILAT_Z + ' není v Gmailu nastavená jako „Odesílat poštu jako“.');
+  }
+  const o = { htmlBody: opt.htmlBody, name: opt.name, from: ODESILAT_Z };
+  if (opt.replyTo) o.replyTo = opt.replyTo;
+  GmailApp.sendEmail(opt.to, opt.subject, opt.body, o);
 }
 
 function list() {

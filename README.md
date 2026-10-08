@@ -148,6 +148,25 @@ připojení vrátí (zkouší to každou minutu).
 Při každé změně `apps-script.gs` je potřeba **Nasadit → Spravovat nasazení → upravit → Nová verze**,
 jinak běží stará verze.
 
+### Z jaké adresy e-maily odcházejí
+
+Skript posílá e-maily z Google účtu, pod kterým je nasazený. Jsou tři možnosti:
+
+1. **Nejjednodušší:** nasaď skript přímo pod účtem, ze kterého mají e-maily chodit
+   (třeba sdílený školní účet `matcher@…`). `ODESILAT_Z` nech prázdné.
+2. **Jiná adresa jako odesílatel:** v Gmailu účtu se skriptem otevři **Nastavení → Účty a import →
+   Odesílat poštu jako → Přidat další e-mailovou adresu**, zadej adresu a potvrď ji kódem, který na ni přijde.
+   U adresy mimo Google (např. školní Outlook) chce Gmail SMTP server a heslo té schránky,
+   u Microsoft 365 to bývá `smtp.office365.com`, port 587, a IT ho musí mít povolené.
+   Pak tu adresu vyplň do `ODESILAT_Z` a znovu nasaď (Spravovat nasazení → Nová verze).
+   Při dalším spuštění `test` Google požádá o oprávnění ke Gmailu.
+3. **Jen odpovědi jinam:** e-maily odejdou z účtu skriptu, ale „Odpovědět“ míří na `ODPOVEDI_NA`
+   (např. studijní oddělení). Uchazeč to skoro nepozná a nic dalšího se nastavovat nemusí.
+
+Upozornění na nové kontakty (`UPOZORNENI_NA`) můžou chodit na jakoukoli adresu, i mimo Google.
+Kdo chce kopii jinam, může si ve své schránce nastavit pravidlo, které zprávy s předmětem
+začínajícím „Matcher:“ přeposílá dál.
+
 ### Varianta Microsoft 365 (Power Automate)
 
 Pokud škola jede na Microsoft 365: v Power Automate vytvoř tok „Při přijetí požadavku HTTP“ →
