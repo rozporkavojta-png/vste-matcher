@@ -1,5 +1,5 @@
 /**
- * VŠTE Matcher — příjem kontaktů a odeslání výsledku e-mailem.
+ * VŠTE Matcher: příjem kontaktů a odeslání výsledku e-mailem.
  *
  * Běží jako Google Apps Script navázaný na Google tabulku (Rozšíření → Apps Script).
  * Appka sem pošle kontakt (POST), skript ho zapíše do listu „Kontakty“
@@ -13,7 +13,7 @@
 const KLIC = 'vste-matcher-2026';           // stejný jako ODESILANI.klic v index.html
 const LIST = 'Kontakty';
 const ODESILATEL_JMENO = 'VŠTE Matcher';
-const ODPOVEDI_NA = '';                      // např. studijni@vstecb.cz — kam půjdou odpovědi a odvolání souhlasu
+const ODPOVEDI_NA = '';                      // např. studijni@vstecb.cz, sem půjdou odpovědi a odvolání souhlasu
 const UPOZORNENI_NA = '';                    // kam poslat upozornění na každý nový kontakt (víc adres odděl čárkou); prázdné = neposílat
 const ODKAZ_ZASADY = 'https://rozporkavojta-png.github.io/vste-matcher/#zasady';
 const ODKAZ_WEB = 'https://www.vstecb.cz';

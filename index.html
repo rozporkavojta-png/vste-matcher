@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* Layout: kiosek na jednu obrazovku. Nahoře otázka a pod ní
-   odpovědi — u vážných seznam, u vtipných meme dlaždice. Vrchol je "IT'S A MATCH". */
+   odpovědi: u vážných seznam, u vtipných meme dlaždice. Vrchol je "IT'S A MATCH". */
 :root{
-  /* Color — vizuální zadání VŠTE */
+  /* Color: vizuální zadání VŠTE */
   --black:#000000;
   --surface:#121013;      /* černá s lehkým magenta posunem */
   --surface-2:#1D1821;
@@ -36,7 +36,7 @@
   --body:"Archivo",system-ui,"Segoe UI",Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
 
-  /* Radius — výrazně oblé rohy */
+  /* Radius: výrazně oblé rohy */
   --r-lg:30px; --r-md:22px; --r-pill:999px;
 
   color-scheme: dark;
@@ -65,7 +65,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--pink);outline-offset:3px}
 
 /* ---------- ambientní pozadí ---------- */
-/* Bez filter:blur — ten se na telefonu přepočítával každý snímek a lagoval. Měkkost dělají samotné gradienty. */
+/* Bez filter:blur, ten se na telefonu přepočítával každý snímek a lagoval. Měkkost dělají samotné gradienty. */
 .aura{position:fixed;inset:-20%;z-index:0;pointer-events:none;opacity:var(--aura)}
 .aura i{position:absolute;display:block;border-radius:50%;will-change:transform}
 .aura i:nth-child(1){width:46vmax;height:46vmax;left:-8vmax;top:-10vmax;background:radial-gradient(circle,var(--red) 0%,transparent 70%);animation:drift1 26s ease-in-out infinite alternate}
@@ -407,7 +407,7 @@ tr:last-child td{border-bottom:0}
       <div class="quiz">
         <ul id="ans"></ul>
         <p class="hint" id="hint"></p>
-        <button class="ghost" id="skip" type="button">Nic z toho — přeskočit</button>
+        <button class="ghost" id="skip" type="button">Nic z toho, přeskočit</button>
       </div>
     </section>
 
@@ -464,7 +464,7 @@ tr:last-child td{border-bottom:0}
     <section class="screen" id="s-nomatch" hidden>
       <div class="center">
         <h1>Žádný <span class="hl">match.</span></h1>
-        <p class="lead">Všechny otázky jsi přeskočil. To se stává — buď jsi hodně vybíravý, nebo tě zrovna nic nebralo. Dej tomu druhou šanci, nebo se zastav u stánku a probereme to osobně.</p>
+        <p class="lead">Všechny otázky jsi přeskočil. To se stává. Buď jsi hodně vybíravý, nebo tě zrovna nic nebralo. Dej tomu druhou šanci, nebo se zastav u stánku a probereme to osobně.</p>
         <div class="row mid"><button class="cta" id="retry">Zkusit znovu</button></div>
       </div>
     </section>
@@ -482,7 +482,7 @@ tr:last-child td{border-bottom:0}
     <section class="screen" id="s-gdpr" hidden>
       <article class="gdpr">
         <p class="eyebrow">Ochrana osobních údajů</p>
-        <h2>Zásady zpracování osobních údajů — VŠTE Matcher</h2>
+        <h2>Zásady zpracování osobních údajů ve VŠTE Matcheru</h2>
         <p class="ver">Verze ze dne <span id="gdprVer"></span></p>
 
         <h3>1. Kdo tvoje údaje zpracovává</h3>
@@ -545,7 +545,7 @@ tr:last-child td{border-bottom:0}
     </section>
 
   </div>
-  <p class="claim">VŠTE Matcher — najdi obor, který ti sedí.</p>
+  <p class="claim">VŠTE Matcher. Najdi obor, který ti sedí.</p>
 </div>
 
 <script>
@@ -558,14 +558,14 @@ tr:last-child td{border-bottom:0}
    funguje i bez internetu. Zobrazí se jen u otázek „Na odlehčenou",
    kde je každá odpověď meme dlaždice. Hýbe se každý: `ef` vybírá pohyb
    (zoom, shake, press, tilt, slide, bounce) a spodní titulek
-   naskakuje až v ráně — tak funguje meme sestřih.
+   naskakuje až v ráně, tak funguje meme sestřih.
    Chceš jiný meme? Nahraď soubor nebo přepiš `m` u konkrétní odpovědi.
    ============================================================ */
 
 var MEMEDIR = "memes/";
 
 var PROGRAMS = {
-  PE : {n:"Podniková ekonomika", l:"Bakalářské studium", e:"📈", d:"Finance, kalkulace a řízení firmy. Rozumíš číslům i tomu, jak podnik dýchá — od malé firmy po korporát.", t:["Finance","Management","Marketing"]},
+  PE : {n:"Podniková ekonomika", l:"Bakalářské studium", e:"📈", d:"Finance, kalkulace a řízení firmy. Rozumíš číslům i tomu, jak podnik dýchá, od malé firmy po korporát.", t:["Finance","Management","Marketing"]},
   RLZ: {n:"Řízení lidských zdrojů", l:"Bakalářské studium", e:"🫂", d:"Nábor, rozvoj lidí, odměňování a firemní kultura. Psychologie práce i pracovní právo v praxi.", t:["HR","Vedení lidí","Pracovní právo"]},
   BA : {n:"Business Analytik", l:"Bakalářské studium", e:"📊", d:"Z dat umíš vytáhnout příběh, který firmě ušetří peníze. Analýza, reporting a datové modely.", t:["Data","Analytika","BI nástroje"]},
   TRD: {n:"Technologie a řízení dopravy", l:"Bakalářské studium", e:"🚚", d:"Dopravní systémy, provoz a plánování přepravy. Postaráš se, aby se svět hýbal včas.", t:["Doprava","Logistika","Provoz"]},
@@ -605,7 +605,7 @@ var QUIZ = {
       ]},
       {tone:"Na odlehčenou", q:"Tvoje ideální superschopnost by byla:", a:[
         {t:"Vidět do budoucnosti a předvídat finanční krize.", m:"stonks.mp4", ef:"shake", e:"🔮", w:{BA:3,PE:2}, why:"čteš trendy dopředu"},
-        {t:"Rentgenový zrak — vidím armování v betonu a statiku budov.", m:"bryle-zkoumam.mp4", ef:"zoom", e:"🦴", w:{PS:4}, why:"vidíš do konstrukcí"},
+        {t:"Rentgenový zrak: vidím armování v betonu a statiku budov.", m:"bryle-zkoumam.mp4", ef:"zoom", e:"🦴", w:{PS:4}, why:"vidíš do konstrukcí"},
         {t:"Telepatie, abych hned věděl, co lidi kolem mě opravdu chtějí.", m:"neuron-activation.mp4", ef:"bounce", e:"🧠", w:{RLZ:4}, why:"vnímáš, co lidi chtějí"},
         {t:"Opravit jakýkoliv motor pouhým pohledem.", m:"superman-poza.mp4", ef:"press", e:"🔧", w:{STR:4}, why:"rozumíš technice"},
         {t:"Teleportace zboží a perfektní organizace provozu bez zácp.", m:"auto-chudy.mp4", ef:"tilt", e:"⚡", w:{TRD:4}, why:"organizuješ provoz"}
@@ -632,10 +632,10 @@ var QUIZ = {
         {t:"Optimalizuji dodavatelské řetězce, globální tok zboží a procesy.", m:"handshake.jpg", ef:"press", e:"🔄", w:{LOG:4}, why:"optimalizuješ řetězce"}
       ]},
       {tone:"Na odlehčenou", q:"Kdybys byl/a postava z filmu, byl/a bys:", a:[
-        {t:"Vlk z Wall Street — ale ten etický a chytrý.", m:"vlk-mikrofon.mp4", ef:"bounce", e:"🐺", w:{PEM:3}, why:"tah na branku s rozumem"},
-        {t:"Sherlock Holmes — odhaluji pravdu, čísla a reálnou hodnotu věcí.", m:"pepe-silvia.mp4", ef:"shake", e:"🕵️", w:{ZN:3}, why:"detektivní přesnost"},
-        {t:"Tony Stark — technika, inovace a mašiny.", m:"stark-endgame.mp4", ef:"press", e:"🦾", w:{STRM:3}, why:"inovátor s technikou"},
-        {t:"Ted Mosby — stavím architektonické ikony.", m:"ted-profesor.mp4", ef:"slide", e:"📐", w:{PSM:3}, why:"stavitel ikon"},
+        {t:"Vlk z Wall Street, ale ten etický a chytrý.", m:"vlk-mikrofon.mp4", ef:"bounce", e:"🐺", w:{PEM:3}, why:"tah na branku s rozumem"},
+        {t:"Sherlock Holmes: odhaluji pravdu, čísla a reálnou hodnotu věcí.", m:"pepe-silvia.mp4", ef:"shake", e:"🕵️", w:{ZN:3}, why:"detektivní přesnost"},
+        {t:"Tony Stark: technika, inovace a mašiny.", m:"stark-endgame.mp4", ef:"press", e:"🦾", w:{STRM:3}, why:"inovátor s technikou"},
+        {t:"Ted Mosby: stavím architektonické ikony.", m:"ted-profesor.mp4", ef:"slide", e:"📐", w:{PSM:3}, why:"stavitel ikon"},
         {t:"Kapitán lodi, co ukočíruje i největší chaos v přístavu.", m:"sparrow-pristav.mp4", ef:"slide", e:"⚓", w:{LOG:3}, why:"kapitán v chaosu"}
       ]}
     ]
@@ -644,7 +644,7 @@ var QUIZ = {
 
 var IDLE_MS = 90000, STORE_KEY = "vste-matcher-leads", DAY_KEY = "vste-matcher-day";
 
-/* ====================== ODESÍLÁNÍ A GDPR — NASTAVENÍ ======================
+/* ====================== ODESÍLÁNÍ A GDPR: NASTAVENÍ ======================
    url:  adresa webové aplikace z Google Apps Scriptu (návod v README, kód v backend/apps-script.gs).
          Dokud je prázdná, kontakty zůstávají jen v zařízení stánku (export přes obsluhu, 5× klik na logo).
    klic: stejný řetězec jako KLIC v Apps Scriptu. Není to heslo (je vidět ve zdrojáku), jen síto na náhodný spam.
@@ -1100,7 +1100,7 @@ el.wipe.addEventListener("click", function(){
 });
 el.copyCsv.addEventListener("click", function(){
   var txt = el.csvBox.value;
-  function fallback(){ el.csvBox.focus(); el.csvBox.select(); el.copyCsv.textContent = "Označeno — Ctrl+C"; }
+  function fallback(){ el.csvBox.focus(); el.csvBox.select(); el.copyCsv.textContent = "Označeno, stiskni Ctrl+C"; }
   if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(txt).then(function(){
       el.copyCsv.textContent = "Zkopírováno";

@@ -23,14 +23,14 @@ Jeden soubor, žádný build, žádné závislosti.
   `python -m http.server 8000` → http://localhost:8000
 
 Memy jsou uložené vedle v `memes/`, takže appka jede i **bez internetu**.
-Z internetu se tahá jen písmo z Google Fonts — když vypadne, naskočí systémové.
+Z internetu se tahá jen písmo z Google Fonts. Když vypadne, naskočí systémové.
 
 ## Ovládání
 
 | Dotyk | Klávesa | Co to udělá |
 |---|---|---|
 | klepnutí na odpověď / dlaždici | 1–5 | vybere odpověď, jde se na další otázku |
-| „Nic z toho — přeskočit" | 0 | otázka se přeskočí bez bodů |
+| „Nic z toho, přeskočit" | 0 | otázka se přeskočí bez bodů |
 | „Zpět" | Backspace | zpět o otázku |
 | „Znovu" | Esc | restart |
 | klepnutí na ligu | 1 / 2 | výběr ligy na úvodní obrazovce |
@@ -113,7 +113,7 @@ Odkaz „Zásady zpracování osobních údajů“ otevře plné znění přímo
 (lze ho otevřít i přímo adresou `…/vste-matcher/#zasady`, ta je i v patičce e-mailu).
 U každého kontaktu se ukládá verze a přesné znění souhlasu a čas udělení (čl. 7 odst. 1 GDPR: souhlas musí jít doložit).
 
-Nastavení je v `index.html` v bloku `ODESILANI A GDPR — NASTAVENÍ` (`ZASADY.verze`, `uchovatDo`, `zpracovatel`).
+Nastavení je v `index.html` v bloku `ODESÍLÁNÍ A GDPR: NASTAVENÍ` (`ZASADY.verze`, `uchovatDo`, `zpracovatel`).
 Když se změní text zásad nebo souhlasu, **zvyš `ZASADY.verze`**.
 
 ## Odesílání e-mailů
@@ -131,7 +131,7 @@ připojení vrátí (zkouší to každou minutu).
 1. Přihlas se **školním Google účtem VŠTE**, ne soukromým Gmailem (kvůli GDPR a limitům:
    školní Workspace pošle až 1 500 e-mailů denně, soukromý Gmail jen 100).
    Pokud škola Google Workspace nemá, viz „Varianta Microsoft 365“ níž.
-2. Vytvoř novou Google tabulku, třeba „VŠTE Matcher — kontakty“. Nesdílej ji s nikým mimo pověřené lidi.
+2. Vytvoř novou Google tabulku, třeba „VŠTE Matcher kontakty“. Nesdílej ji s nikým mimo pověřené lidi.
 3. V tabulce: **Rozšíření → Apps Script**. Smaž ukázkový kód a vlož celý obsah `backend/apps-script.gs`.
 4. Nahoře v souboru vyplň `ODPOVEDI_NA` (např. adresu studijního oddělení), do `UPOZORNENI_NA` dej schránku,
    kam má po každém vyplnění přijít upozornění s kontaktem a oborem (víc adres odděl čárkou), a zkontroluj `KLIC`.
