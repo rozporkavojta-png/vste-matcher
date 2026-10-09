@@ -132,6 +132,18 @@ const SKOLA = [
 const C = { karmin: '#9A2221', karminTmavy: '#7A1A19', text: '#111617', sedy: '#5C5353', svetly: '#FBEEF2',
             pozadi: '#F6F1F1', linka: '#EAD9DA', akcent: '#C8203F', akcent2: '#B53F80' };
 const LOGO_SVETLE = 'https://rozporkavojta-png.github.io/vste-matcher/logo/matcher-logo-svetle-email.png';
+const LOGO_TMAVE = 'https://rozporkavojta-png.github.io/vste-matcher/logo/matcher-logo-tmave-email.png';
+
+/* Vzhled e-mailu: 1 = karmínová hlavička, 2 = bílá a čistá, 3 = celý karmínový. */
+const VZHLED_EMAILU = 1;
+const VZHLEDY = {
+  1: { okoli: C.pozadi, hlavickaBg: C.karmin, logo: LOGO_SVETLE, heslo: C.svetly,
+       procBg: C.karmin, procCislo: '#FFFFFF', procText: C.svetly, procStitek: C.svetly, procTlBg: '#FFFFFF', procTlText: C.karmin },
+  2: { okoli: '#FFFFFF', hlavickaBg: '#FFFFFF', logo: LOGO_TMAVE, heslo: C.karmin,
+       procBg: C.pozadi, procCislo: C.karmin, procText: C.text, procStitek: C.karmin, procTlBg: C.karmin, procTlText: '#FFFFFF' },
+  3: { okoli: C.karmin, hlavickaBg: C.karmin, logo: LOGO_SVETLE, heslo: C.svetly,
+       procBg: C.karminTmavy, procCislo: '#FFFFFF', procText: C.svetly, procStitek: C.svetly, procTlBg: '#FFFFFF', procTlText: C.karmin }
+};
 
 function posliVysledek(k) {
   const o = OBORY[k.oborKod] || null;
@@ -150,7 +162,8 @@ function posliVysledek(k) {
 }
 
 /* HTML e-mailu: tabulky a styly přímo v prvcích, aby to drželo i v Outlooku a Gmailu. */
-function emailVysledek(k, o) {
+function emailVysledek(k, o, vzhled) {
+  const V = VZHLEDY[vzhled || VZHLED_EMAILU] || VZHLEDY[1];
   const f = 'font-family:Arial,Helvetica,sans-serif;';
   const tlacitko = (href, popisek, bg, barva) =>
     '<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="' + bg + '" style="border-radius:999px">' +
@@ -192,19 +205,19 @@ function emailVysledek(k, o) {
   }
 
   const skola = SKOLA.map(x =>
-    '<tr><td valign="top" style="' + f + 'padding:8px 14px 8px 0;font-size:20px;font-weight:bold;color:#FFFFFF;white-space:nowrap">' + esc(x[0]) + '</td>' +
-    '<td valign="top" style="' + f + 'padding:10px 0;font-size:14px;line-height:1.45;color:' + C.svetly + '">' + esc(x[1]) + '</td></tr>').join('');
+    '<tr><td valign="top" style="' + f + 'padding:8px 14px 8px 0;font-size:20px;font-weight:bold;color:' + V.procCislo + ';white-space:nowrap">' + esc(x[0]) + '</td>' +
+    '<td valign="top" style="' + f + 'padding:10px 0;font-size:14px;line-height:1.45;color:' + V.procText + '">' + esc(x[1]) + '</td></tr>').join('');
 
   return '<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<meta name="color-scheme" content="light"><title>' + esc('Tvůj match na VŠTE') + '</title></head>' +
-    '<body style="margin:0;padding:0;background:' + C.pozadi + '">' +
-    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.pozadi + '"><tr><td align="center" style="padding:24px 12px">' +
+    '<body style="margin:0;padding:0;background:' + V.okoli + '">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + V.okoli + '"><tr><td align="center" style="padding:24px 12px">' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#FFFFFF;border-radius:22px;overflow:hidden">' +
 
     // hlavička: karmínová s logem, jako v PDF
-    '<tr><td bgcolor="' + C.karmin + '" style="padding:30px 26px 26px">' +
-    '<img src="' + LOGO_SVETLE + '" width="220" alt="M&amp;tcher VŠTE" style="display:block;width:220px;max-width:70%;height:auto;border:0">' +
-    '<p style="' + f + 'margin:18px 0 0;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:' + C.svetly + '">Najdi obor, který ti sedí.</p></td></tr>' +
+    '<tr><td bgcolor="' + V.hlavickaBg + '" style="padding:30px 26px 26px">' +
+    '<img src="' + V.logo + '" width="220" alt="M&amp;tcher VŠTE" style="display:block;width:220px;max-width:70%;height:auto;border:0">' +
+    '<p style="' + f + 'margin:18px 0 0;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:' + V.heslo + '">Najdi obor, který ti sedí.</p></td></tr>' +
     '<tr><td bgcolor="' + C.akcent + '" style="height:5px;line-height:5px;font-size:0;background:linear-gradient(90deg,' + C.akcent2 + ',' + C.akcent + ')">&nbsp;</td></tr>' +
 
     // pozdrav a match
@@ -224,11 +237,11 @@ function emailVysledek(k, o) {
     prehled +
 
     // proč VŠTE: karmínový blok
-    '<tr><td bgcolor="' + C.karmin + '" style="padding:26px">' +
-    '<div style="' + f + 'font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:' + C.svetly + ';font-weight:bold;margin:0 0 8px">Proč VŠTE</div>' +
+    '<tr><td bgcolor="' + V.procBg + '" style="padding:26px">' +
+    '<div style="' + f + 'font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:' + V.procStitek + ';font-weight:bold;margin:0 0 8px">Proč VŠTE</div>' +
     '<table role="presentation" cellpadding="0" cellspacing="0" border="0">' + skola + '</table>' +
     '<div style="height:16px;line-height:16px;font-size:0">&nbsp;</div>' +
-    tlacitko(WEB_VSTE + '/studijni-programy/', 'Všechny studijní programy', '#FFFFFF', C.karmin) +
+    tlacitko(WEB_VSTE + '/studijni-programy/', 'Všechny studijní programy', V.procTlBg, V.procTlText) +
     '</td></tr>' +
 
     // patička s GDPR
