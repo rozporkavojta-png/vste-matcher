@@ -284,7 +284,6 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
   border:1.5px solid var(--line-strong);border-radius:var(--r-pill);padding:4px 11px}
 .why{margin:0;color:var(--grey);font-size:13.5px;text-align:center}
 .why b{color:var(--paper);font-weight:650}
-.shotline{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0;text-align:center}
 .sheet{width:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-md);
   padding:15px 17px;display:flex;flex-direction:column;gap:10px}
 .sheet .hd{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
@@ -443,7 +442,6 @@ tr:last-child td{border-bottom:0}
           <h2 id="rName"></h2>
           <ul class="tags" id="rTags"></ul>
           <p class="why" id="rWhy"></p>
-          <p class="shotline" id="rRank"></p>
         </div>
 
         <div class="sheet">
@@ -689,7 +687,7 @@ var ZASADY = {
 var S = null, el = {};
 ["s-start","s-quiz","s-result","s-nomatch","s-thanks","s-leads","levelOpts","ans","hint","skip","qNum","qTone","qText",
  "pips","undo","restart","dayCount","matchfx","mEmo","mName",
- "arc","pct","rLevel","rName","rTags","rWhy","rRank","rDesc","rBars","leadForm","email",
+ "arc","pct","rLevel","rName","rTags","rWhy","rDesc","rBars","leadForm","email",
  "consent","formErr","again","retry","done","brand","leadCount","leadRows","csvBox","copyCsv",
  "wipe","closeLeads","wipeNote","fx","app","stage","theme",
  "firstName","lastName","news","hp","openGdpr","gdprBack","gdprVer","gdprDo","gdprZprac","thanksText","s-gdpr"]
@@ -966,7 +964,6 @@ function renderResult(){
   var uniq = r.why.filter(function(w, i){ return r.why.indexOf(w) === i; }).slice(0, 3);
   el.rWhy.innerHTML = "<b>Proč to sedí: </b>";
   el.rWhy.appendChild(document.createTextNode(uniq.length ? uniq.join(" · ") : "vybíral jsi přesně tímhle směrem"));
-  el.rRank.textContent = "📸 Vyfoť se s výsledkem";
 
   el.rBars.innerHTML = "";
   r.shody.forEach(function(x, i){
