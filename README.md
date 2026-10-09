@@ -135,6 +135,21 @@ do Apps Scriptu → ten ho zapíše do tabulky a pošle uchazeči e-mail s výsl
 ze zařízení smaže. Když na stánku nejde internet, kontakt počká a odešle se sám, jakmile se
 připojení vrátí (zkouší to každou minutu).
 
+### Co přijde uchazeči do e-mailu
+
+E-mail je v barvách loga M&tcher (karmínová `#9A2221`, bílá, tmavý text `#111617`) a obsahuje:
+
+1. obor, který uchazeči vyšel, s procentem shody, formou a délkou studia,
+2. co se na oboru naučí a kde se uplatní, tlačítko na detail oboru na webu VŠTE,
+3. procenta všech oborů dané úrovně,
+4. karmínový blok „Proč VŠTE“ (97 % absolventů s prací do dvou měsíců, studium zdarma, praxe, zahraničí)
+   a tlačítko na všechny studijní programy,
+5. patičku s údaji správce a odvoláním souhlasu.
+
+Texty o oborech a škole jsou převzaté z webu VŠTE (stav 9. 10. 2026) a uložené v `backend/apps-script.gs`
+v objektech `OBORY` a `SKOLA`. Když se web změní, uprav je tam. Logo v e-mailu se načítá z GitHub Pages
+(`logo/matcher-logo-svetle-email.png`). Náhled e-mailu dostaneš spuštěním funkce `test`.
+
 ### Odesílání přes Postmark
 
 E-maily posíláme přes [Postmark](https://postmarkapp.com). Postmark se nedá volat přímo z webu,

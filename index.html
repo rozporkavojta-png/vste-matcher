@@ -509,7 +509,7 @@ tr:last-child td{border-bottom:0}
         <p>Pověřenec pro ochranu osobních údajů: FairData Professionals a.s., e-mail <span class="sel">dpo.vstecb@fairdata.cz</span>, tel. <span class="sel">+420 255 000 376</span>.</p>
 
         <h3>2. Jaké údaje zpracováváme</h3>
-        <p>Jméno, příjmení, e-mail, výsledek kvízu (doporučený a druhý nejbližší obor, úroveň studia, procento shody), datum a čas odeslání, verzi souhlasu a informaci, jestli chceš dostávat novinky. Tvoje jednotlivé odpovědi v kvízu neukládáme.</p>
+        <p>Jméno, příjmení, e-mail, výsledek kvízu (doporučený obor, úroveň studia a procento shody u všech oborů), datum a čas odeslání, verzi souhlasu a informaci, jestli chceš dostávat novinky. Tvoje jednotlivé odpovědi v kvízu neukládáme.</p>
 
         <h3>3. Proč a na jakém základě</h3>
         <ul>
@@ -677,7 +677,7 @@ var IDLE_MS = 90000, STORE_KEY = "vste-matcher-leads", DAY_KEY = "vste-matcher-d
    Při změně textu zásad nebo souhlasu zvyš verzi. */
 var ODESILANI = { url: "", klic: "vste-matcher-2026" };
 var ZASADY = {
-  verze: "8. 10. 2026",
+  verze: "9. 10. 2026",
   uchovatDo: "31. 10. 2027",
   zpracovatel: "Google Ireland Limited (tabulka s kontakty) a Postmark, AC PM LLC, USA (odesílání e-mailů; obsah e-mailů maže po 45 dnech)",
   souhlas: "Je mi alespoň 15 let a souhlasím se zpracováním svých osobních údajů (jméno, příjmení, e-mail a výsledek kvízu) Vysokou školou technickou a ekonomickou v Českých Budějovicích za účelem zaslání výsledku a informací o doporučeném oboru.",
@@ -1075,7 +1075,8 @@ el.leadForm.addEventListener("submit", function(ev){
   list.push({
     id: noveId(), cas: ted,
     jmeno: jmeno, prijmeni: prijmeni, email: mail,
-    obor: p.n, uroven: p.l, shoda: r.pct, druhyObor: d2.n,
+    obor: p.n, oborKod: r.top, uroven: p.l, shoda: r.pct, druhyObor: d2.n,
+    prehled: r.shody.map(function(x){ return {obor: PROGRAMS[x.k].n, pct: x.pct}; }),
     popis: p.d, tagy: p.t.join(", "),
     novinky: el.news.checked,
     souhlas: { verze: ZASADY.verze, cas: ted, text: ZASADY.souhlas, novinkyText: el.news.checked ? ZASADY.novinky : "" },
