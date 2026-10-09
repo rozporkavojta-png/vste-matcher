@@ -70,10 +70,19 @@ Jedna odpověď vypadá takhle:
 
 ## Jak se počítá shoda
 
-Každá vybraná odpověď rozdá body konkrétním oborům (`w`).
-Procento = podíl bodů vítěze na všech udělených bodech, přepočtený do rozmezí 78–98 %.
-Kdo vybírá jedním směrem, dostane 96–98 %. Kdo míchá, dostane kolem 80 %.
-Kdo přeskočí všechny otázky, uvidí obrazovku „Žádný match".
+Každá vybraná odpověď rozdá body konkrétním oborům (`w`) a body se násobí **váhou otázky**:
+vážně míněná otázka („Naostro“) má váhu **2**, odlehčená s memy váhu **1**. Jedna vtipná otázka
+tak nerozhodne celý výsledek.
+
+Procento oboru = jeho body / maximum bodů, které šlo u zodpovězených otázek získat
+(u každé otázky nejsilnější odpověď × váha). Maximum je pro všechny obory stejné, takže se dají
+porovnat. Na výsledku je vidět procento **všech oborů** dané úrovně seřazené od nejvyššího.
+Přeskočené otázky se nepočítají. Kdo přeskočí všechny, uvidí obrazovku „Žádný match“.
+
+U navazujícího studia je jako první otázka „Na co chceš navázat ze svého bakaláře?“.
+
+Počítadlo „Matchnuto celkem“ na úvodu roste a nenuluje se. Počítá dohrané kvízy v daném zařízení
+(telefon nebo tablet na stánku), ne dohromady za všechna zařízení.
 
 ## Zdroje GIFů
 
@@ -226,17 +235,17 @@ změň zpracovatele na Microsoft Ireland Operations Ltd.
 
 ## Vizuál
 
-Podle `VSTE_Matcher_vizualni_zadani.docx`: výrazně oblé rohy, velká tučná typografie,
-černobílé plochy s červenou a růžovou, výsledková obrazovka jako vizuální vrchol.
+Logo **M&tcher** (VŠTE) je ve `logo/`: `matcher-logo-tmave.webp` na bílé, `matcher-logo-svetle.webp` na karmínové.
+Barvy odpovídají hlavnímu webu VŠTE: bílá a karmínová. Výchozí je bílý režim,
+druhý režim je karmínový (zapne se podle nastavení telefonu nebo přepínačem ☀ / ☾ v liště).
+Růžová a fialová zůstaly jen v ampersandu loga.
 
 | Barva | HEX |
 |---|---|
-| Tmavě červená | `#9E1B19` |
-| Červená | `#C61517` |
-| Černá | `#000000` |
-| Šedá | `#B9B6BA` |
-| Fialová (akcent) | `#9442CE` |
-| Růžová (akcent) | `#DD3ECA` |
+| Karmínová (VŠTE) | `#9A2221` |
+| Tmavá karmínová | `#7A1A19` |
+| Text | `#1C1717` |
+| Šedý text | `#5C5353` |
 | Bílá | `#FFFFFF` |
 
 Písmo: Archivo (nadpisy a text), IBM Plex Mono (popisky).

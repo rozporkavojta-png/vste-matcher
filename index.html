@@ -1,35 +1,41 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>VŠTE Matcher</title>
+<script>/* režim (bílý / karmínový) nastavit ještě před prvním vykreslením, ať nic nebliká */try{var t=localStorage.getItem("vste-matcher-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
 /* Layout: kiosek na jednu obrazovku. Nahoře otázka a pod ní
    odpovědi: u vážných seznam, u vtipných meme dlaždice. Vrchol je "IT'S A MATCH". */
+/* Barvy podle hlavního webu VŠTE a loga M&tcher: bílá a karmínová (#9A2221).
+   Výchozí je bílý režim. Druhý režim je karmínový (stejně jako světlá verze loga v PDF),
+   zapne se podle telefonu nebo přepínačem v liště. Růžová zůstává jen v ampersandu loga. */
 :root{
-  /* Color: vizuální zadání VŠTE */
-  --black:#000000;
-  --surface:#121013;      /* černá s lehkým magenta posunem */
-  --surface-2:#1D1821;
-  --paper:#FFFFFF;
-  --grey:#B9B6BA;
-  --red:#C61517;
-  --red-dark:#9E1B19;
-  --pink:#DD3ECA;
-  --violet:#9442CE;
-  --line:rgba(255,255,255,.14);
-  --line-strong:rgba(255,255,255,.3);
-  --gold:#FFC53D;
-  --go:#35D07F;
-  --tint:rgba(255,255,255,.08);     /* jemné podbarvení při hoveru */
-  --tint-2:rgba(255,255,255,.18);
-  --field:rgba(0,0,0,.45);          /* pozadí políček */
-  --well:#0A090B;                   /* pozadí za GIFem */
-  --shadow:rgba(0,0,0,.9);
-  --overlay:rgba(0,0,0,.85);
-  --err:#FF8E8E;
-  --on-go:#000;
-  --aura:.42;
+  --black:#FFFFFF;          /* pozadí stránky */
+  --surface:#FFFFFF;
+  --surface-2:#F8F1F1;
+  --paper:#1C1717;          /* text */
+  --grey:#5C5353;
+  --red:#9A2221;            /* karmínová VŠTE */
+  --red-dark:#7A1A19;
+  --pink:#9A2221;           /* akcent (dřív růžová) */
+  --violet:#6E1716;
+  --line:rgba(154,34,33,.16);
+  --line-strong:rgba(28,23,23,.26);
+  --gold:#9A2221;
+  --go:#1E8E52;
+  --tint:rgba(154,34,33,.06);
+  --tint-2:rgba(154,34,33,.15);
+  --field:#FFFFFF;
+  --well:#F3ECEC;           /* pozadí za GIFem */
+  --shadow:rgba(80,20,20,.18);
+  --overlay:rgba(255,255,255,.93);
+  --err:#B3261E;
+  --on-go:#FFFFFF;
+  --aura:.10;
+  --cta-bg:#9A2221;         /* plné tlačítko */
+  --cta-ink:#FFFFFF;
+  --bar:#9A2221;            /* sloupce v přehledu oborů */
 
   /* Type */
   --display:"Archivo","Archivo Black",Impact,sans-serif;
@@ -39,21 +45,27 @@
   /* Radius: výrazně oblé rohy */
   --r-lg:30px; --r-md:22px; --r-pill:999px;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
-/* Světlý režim: podle nastavení telefonu, nebo ručně přepínačem v liště (data-theme). */
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--black:#F6F3F7;--surface:#FFFFFF;--surface-2:#F1EBF3;--paper:#17121B;--grey:#5F5864;
-  --red:#C61517;--red-dark:#9E1B19;--pink:#B4229F;--violet:#7A2FB3;
-  --line:rgba(23,18,27,.12);--line-strong:rgba(23,18,27,.26);--gold:#9A5B00;--go:#1E9E5C;
-  --tint:rgba(23,18,27,.05);--tint-2:rgba(23,18,27,.14);--field:#FFFFFF;--well:#ECE6EE;
-  --shadow:rgba(60,20,70,.28);--overlay:rgba(246,243,247,.9);--err:#B3261E;--on-go:#fff;--aura:.2;
-  color-scheme:light}}
-:root[data-theme="light"]{--black:#F6F3F7;--surface:#FFFFFF;--surface-2:#F1EBF3;--paper:#17121B;--grey:#5F5864;
-  --red:#C61517;--red-dark:#9E1B19;--pink:#B4229F;--violet:#7A2FB3;
-  --line:rgba(23,18,27,.12);--line-strong:rgba(23,18,27,.26);--gold:#9A5B00;--go:#1E9E5C;
-  --tint:rgba(23,18,27,.05);--tint-2:rgba(23,18,27,.14);--field:#FFFFFF;--well:#ECE6EE;
-  --shadow:rgba(60,20,70,.28);--overlay:rgba(246,243,247,.9);--err:#B3261E;--on-go:#fff;--aura:.2;
-  color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--black:#9A2221;--surface:#871E1D;--surface-2:#7A1B1A;--paper:#FFF6F7;--grey:#F3D6D9;
+  --red:#FFFFFF;--red-dark:#F6DDE0;--pink:#FFD4DA;--violet:#FFE6E9;
+  --line:rgba(255,255,255,.22);--line-strong:rgba(255,255,255,.45);--gold:#FFFFFF;--go:#7CF0AE;
+  --tint:rgba(255,255,255,.08);--tint-2:rgba(255,255,255,.2);--field:rgba(0,0,0,.16);--well:#6B1716;
+  --shadow:rgba(40,0,0,.45);--overlay:rgba(122,26,25,.95);--err:#FFE08A;--on-go:#0F3D24;--aura:.16;
+  --cta-bg:#FFFFFF;--cta-ink:#9A2221;--bar:#FFFFFF;
+  color-scheme:dark}}
+:root[data-theme="dark"]{--black:#9A2221;--surface:#871E1D;--surface-2:#7A1B1A;--paper:#FFF6F7;--grey:#F3D6D9;
+  --red:#FFFFFF;--red-dark:#F6DDE0;--pink:#FFD4DA;--violet:#FFE6E9;
+  --line:rgba(255,255,255,.22);--line-strong:rgba(255,255,255,.45);--gold:#FFFFFF;--go:#7CF0AE;
+  --tint:rgba(255,255,255,.08);--tint-2:rgba(255,255,255,.2);--field:rgba(0,0,0,.16);--well:#6B1716;
+  --shadow:rgba(40,0,0,.45);--overlay:rgba(122,26,25,.95);--err:#FFE08A;--on-go:#0F3D24;--aura:.16;
+  --cta-bg:#FFFFFF;--cta-ink:#9A2221;--bar:#FFFFFF;
+  color-scheme:dark}
+/* Logo: tmavé na bílém, světlé na karmínovém. */
+.logo-svetle{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .logo-tmave{display:none}:root:not([data-theme="light"]) .logo-svetle{display:block}}
+:root[data-theme="dark"] .logo-tmave{display:none}
+:root[data-theme="dark"] .logo-svetle{display:block}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -80,15 +92,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
 
 .bar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:11px 20px calc(8px + env(safe-area-inset-top,0px))}
-.brand{display:flex;align-items:baseline;gap:9px;background:none;border:0;padding:4px 6px;margin:0;flex:0 0 auto;
-  font-family:var(--display);font-variation-settings:"wdth" 120,"wght" 900;
-  font-size:clamp(16px,2.1vw,21px);letter-spacing:-.01em;text-transform:uppercase}
-.brand .mark{font-variation-settings:"wdth" 112,"wght" 800;font-style:italic;position:relative;
-  background:linear-gradient(96deg,var(--red) 10%,var(--pink) 70%,var(--violet));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-.brand .mark::after{content:"";position:absolute;right:-13px;top:.18em;width:9px;height:9px;border-radius:50%;
-  background:var(--pink);box-shadow:0 0 0 0 rgba(221,62,202,.6);animation:beat 2.4s ease-out infinite}
-@keyframes beat{0%,70%,100%{box-shadow:0 0 0 0 rgba(221,62,202,.55)}35%{box-shadow:0 0 0 9px rgba(221,62,202,0)}}
+.brand{display:flex;align-items:center;background:none;border:0;padding:2px;margin:0;flex:0 1 auto;min-width:0}
+.brand .logo{height:clamp(40px,5vw,52px);width:auto;max-width:100%}
 .bar .spacer{flex:1 1 auto;min-width:0}
 .ghost{background:transparent;border:1.5px solid var(--line-strong);border-radius:var(--r-pill);
   padding:7px 14px;font-size:12.5px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;
@@ -115,7 +120,7 @@ h2{font-variation-settings:"wdth" 112,"wght" 850;font-size:clamp(22px,3.6vw,34px
 h3{margin:0;font-family:var(--display);font-variation-settings:"wdth" 112,"wght" 800;font-size:clamp(16.5px,2.2vw,21px);letter-spacing:-.015em}
 .lead{margin:0;max-width:52ch;color:var(--grey);font-size:clamp(14px,1.6vw,17px)}
 .center{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
-.hl{background:linear-gradient(96deg,var(--red) 0%,var(--pink) 58%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hl{color:var(--pink)}
 h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(var(--w,0)*90ms)}
 @keyframes wordIn{from{opacity:0;transform:translate3d(0,.5em,0) rotate(2deg)}to{opacity:1;transform:none}}
 .counter{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);
@@ -133,7 +138,7 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
   animation:optIn .46s cubic-bezier(.2,.85,.2,1) both;animation-delay:calc(var(--i,0)*70ms + 80ms)}
 @keyframes optIn{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
 .opt::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
-  background:linear-gradient(96deg,var(--red-dark),var(--red) 45%,var(--pink));transition:opacity .22s}
+  background:var(--cta-bg);transition:opacity .22s}
 .opt > *{position:relative}
 .opt:hover{border-color:var(--line-strong);transform:translateY(-2px)}
 .opt:hover::before{opacity:.16}
@@ -144,7 +149,7 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .opt:hover .txt{color:var(--paper)}
 .opt.picked{border-color:transparent}
 .opt.picked::before{opacity:1}
-.opt.picked,.opt.picked .txt,.opt.picked .league{color:#fff}
+.opt.picked,.opt.picked .txt,.opt.picked .league{color:var(--cta-ink)}
 
 /* ---------- otázka nad balíčkem ---------- */
 .qhead{width:100%;max-width:430px;display:flex;flex-direction:column;gap:7px;align-items:center;text-align:center;flex:0 0 auto}
@@ -167,7 +172,7 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
   transition:border-color .22s,transform .22s cubic-bezier(.2,.9,.2,1),opacity .3s;
   animation:optIn .46s cubic-bezier(.2,.85,.2,1) both;animation-delay:calc(var(--i,0)*60ms + 60ms)}
 .choice::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
-  background:linear-gradient(96deg,var(--red-dark),var(--red) 45%,var(--pink));transition:opacity .22s}
+  background:var(--cta-bg);transition:opacity .22s}
 .choice > *{position:relative}
 .choice .key{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
   border:1.5px solid var(--line-strong);font-family:var(--mono);font-size:13px;font-weight:600;color:var(--pink);
@@ -211,7 +216,7 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .memebox .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .memebox.ziva{background:var(--well)}
 .memebox .fallback{position:absolute;inset:0;display:grid;place-items:center;font-size:min(16vw,72px)}
-.memebox .flash{position:absolute;inset:0;background:linear-gradient(120deg,var(--pink),var(--violet));
+.memebox .flash{position:absolute;inset:0;background:var(--tint-2);
   opacity:0;mix-blend-mode:screen;animation:efFlash 3s infinite}
 @keyframes efFlash{0%,43%{opacity:0}46%{opacity:.22}58%,100%{opacity:0}}
 
@@ -260,7 +265,7 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 /* ---------- výsledek ---------- */
 .result{width:100%;display:flex;flex-direction:column;align-items:center;gap:clamp(12px,2vh,18px)}
 .matchcard{width:100%;border-radius:var(--r-lg);padding:clamp(17px,2.8vw,25px);position:relative;overflow:hidden;
-  background:linear-gradient(150deg,rgba(198,21,23,.3),rgba(148,66,206,.22)),var(--surface);
+  background:linear-gradient(150deg,var(--tint-2),var(--tint) 60%),var(--surface);
   border:1.5px solid var(--line-strong);display:flex;flex-direction:column;align-items:center;gap:13px}
 .ring{position:relative;width:clamp(134px,18vh,172px);aspect-ratio:1;max-width:100%;flex:0 0 auto}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
@@ -283,11 +288,22 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .sheet{width:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-md);
   padding:15px 17px;display:flex;flex-direction:column;gap:10px}
 .sheet .hd{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
-.runner{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  border:1.5px dashed var(--line-strong);border-radius:var(--r-md);padding:11px 17px;color:var(--grey);font-size:13.5px}
-.runner strong{color:var(--paper);font-weight:700}
+.others{width:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-md);
+  padding:15px 17px;display:flex;flex-direction:column;gap:12px}
+.others .hd{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+.bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.bars li{display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:baseline}
+.bars .nm{font-weight:650;font-size:14.5px;line-height:1.25;min-width:0}
+.bars .pc{font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 850;font-size:17px;font-variant-numeric:tabular-nums}
+.bars .tr{grid-column:1 / -1;height:9px;border-radius:var(--r-pill);background:var(--tint-2);overflow:hidden}
+.bars .fill{display:block;height:100%;width:0;border-radius:inherit;background:var(--bar);opacity:.55;
+  transition:width .9s cubic-bezier(.2,.9,.2,1)}
+.bars li.top .nm{font-size:15.5px}
+.bars li.top .pc{color:var(--pink)}
+.bars li.top .fill{opacity:1}
+.others .note{margin:0;font-size:12px;color:var(--grey);line-height:1.45}
 
-.capture{width:100%;background:linear-gradient(140deg,rgba(198,21,23,.22),rgba(148,66,206,.18));
+.capture{width:100%;background:var(--surface-2);
   border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(16px,2.6vw,22px);
   display:flex;flex-direction:column;gap:11px}
 .capture h3{margin:0}
@@ -317,7 +333,7 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .gdpr .row{margin-top:14px}
 .sel{user-select:all;color:var(--paper);font-weight:600}
 .cta{flex:0 0 auto;border:0;border-radius:var(--r-pill);padding:13px 24px;
-  background:linear-gradient(96deg,var(--red-dark),var(--red) 45%,var(--pink));color:#fff;
+  background:var(--cta-bg);color:var(--cta-ink);
   font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 800;
   font-size:14px;letter-spacing:.02em;text-transform:uppercase;
   transition:transform .2s cubic-bezier(.2,.9,.2,1),filter .2s}
@@ -330,9 +346,9 @@ h1 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.9,.2,1) both;an
 .err[hidden]{display:none!important}
 
 .seal{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;
-  background:linear-gradient(140deg,var(--red),var(--pink));animation:pop .6s cubic-bezier(.3,1.5,.4,1) both}
+  background:var(--cta-bg);animation:pop .6s cubic-bezier(.3,1.5,.4,1) both}
 .seal svg{width:45px;height:45px}
-.seal path{stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round;
+.seal path{stroke:var(--cta-ink);stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .25s ease-out forwards}
 @keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -353,8 +369,7 @@ tr:last-child td{border-bottom:0}
   .bar,.stage{padding-inline:16px}
   /* Lišta má i přepínač režimu, na úzkém telefonu musí všechno vedle sebe. */
   .bar{gap:6px}
-  .brand{gap:6px;padding-inline:2px;font-size:15px}
-  .brand .mark::after{right:-11px;width:7px;height:7px}
+  .brand .logo{height:38px}
   .ghost{padding:6px 10px;font-size:11.5px;letter-spacing:.02em}
   .ghost.theme{padding:6px 9px;font-size:14px}
 }
@@ -379,9 +394,9 @@ tr:last-child td{border-bottom:0}
 
 <div class="app" id="app">
   <div class="bar">
-    <button class="brand" id="brand" title="VŠTE Matcher"><b>VŠTE</b><span class="mark">Matcher</span></button>
+    <button class="brand" id="brand" title="VŠTE Matcher" aria-label="VŠTE Matcher"><img class="logo logo-tmave" src="logo/matcher-logo-tmave.webp" alt="M&amp;tcher VŠTE" width="1570" height="423"><img class="logo logo-svetle" src="logo/matcher-logo-svetle.webp" alt="M&amp;tcher VŠTE" width="1571" height="423"></button>
     <span class="spacer"></span>
-    <button class="ghost theme" id="theme" type="button" aria-label="Přepnout světlý a tmavý režim"></button>
+    <button class="ghost theme" id="theme" type="button" aria-label="Přepnout bílý a karmínový režim"></button>
     <button class="ghost" id="undo" hidden>↩ Zpět</button>
     <button class="ghost" id="restart" hidden>Znovu</button>
   </div>
@@ -417,7 +432,7 @@ tr:last-child td{border-bottom:0}
           <div class="ring">
             <svg viewBox="0 0 200 200" aria-hidden="true">
               <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#9E1B19"/><stop offset="55%" stop-color="#C61517"/><stop offset="100%" stop-color="#DD3ECA"/>
+                <stop offset="0%" style="stop-color:var(--red-dark)"/><stop offset="100%" style="stop-color:var(--pink)"/>
               </linearGradient></defs>
               <circle class="track" cx="100" cy="100" r="86"/>
               <circle class="arc" id="arc" cx="100" cy="100" r="86"/>
@@ -436,7 +451,11 @@ tr:last-child td{border-bottom:0}
           <p class="why" style="text-align:left" id="rDesc"></p>
         </div>
 
-        <div class="runner" id="rRunner"></div>
+        <div class="others">
+          <span class="hd">Jak ti sedí jednotlivé obory</span>
+          <ol class="bars" id="rBars"></ol>
+          <p class="note">Procento říká, kolik bodů dostal obor z maxima, které šlo podle tvých odpovědí získat. Vážné otázky mají dvojnásobnou váhu.</p>
+        </div>
 
         <form class="capture" id="leadForm" novalidate>
           <h3>Pošleme ti výsledek a info o oboru do mailu</h3>
@@ -624,6 +643,13 @@ var QUIZ = {
     txt:"Bakaláře už mám nebo dokončuji a chci navazujícího magistra (Ing.).",
     order:["PEM","ZN","STRM","PSM","LOG"],
     qs:[
+      {tone:"Naostro", q:"Na co chceš navázat ze svého bakaláře?", a:[
+        {t:"Na ekonomiku, management nebo finance.", m:"", ef:"zoom", e:"💼", w:{PEM:4, ZN:2}, why:"navazuješ na ekonomiku a řízení"},
+        {t:"Na stavebnictví nebo architekturu.", m:"", ef:"zoom", e:"🏢", w:{PSM:4, ZN:2}, why:"navazuješ na stavařinu"},
+        {t:"Na strojírenství nebo jiný technický obor.", m:"", ef:"zoom", e:"🦾", w:{STRM:4, ZN:1}, why:"navazuješ na techniku"},
+        {t:"Na dopravu, logistiku nebo zasílatelství.", m:"", ef:"zoom", e:"⚓", w:{LOG:4, ZN:1}, why:"navazuješ na dopravu a logistiku"},
+        {t:"Chci to změnit a jít jinam, než jsem studoval/a.", m:"", ef:"zoom", e:"🔀", w:{PEM:2, LOG:2, ZN:2}, why:"chceš změnu směru"}
+      ]},
       {tone:"Naostro", q:"Jaký je tvůj přístup k řešení problémů?", a:[
         {t:"Hledám ekonomickou efektivitu a strategický růst podniku.", m:"gusfring.png", ef:"tilt", e:"💼", w:{PEM:4}, why:"míříš na efektivitu a růst firmy"},
         {t:"Detailně zkoumám fakta, oceňuji majetek a dělám znalecké posudky.", m:"scrolloftruth.jpg", ef:"zoom", e:"🔍", w:{ZN:4}, why:"ověřuješ fakta a reálnou hodnotu"},
@@ -663,7 +689,7 @@ var ZASADY = {
 var S = null, el = {};
 ["s-start","s-quiz","s-result","s-nomatch","s-thanks","s-leads","levelOpts","ans","hint","skip","qNum","qTone","qText",
  "pips","undo","restart","dayCount","matchfx","mEmo","mName",
- "arc","pct","rLevel","rName","rTags","rWhy","rRank","rDesc","rRunner","leadForm","email",
+ "arc","pct","rLevel","rName","rTags","rWhy","rRank","rDesc","rBars","leadForm","email",
  "consent","formErr","again","retry","done","brand","leadCount","leadRows","csvBox","copyCsv",
  "wipe","closeLeads","wipeNote","fx","app","stage","theme",
  "firstName","lastName","news","hp","openGdpr","gdprBack","gdprVer","gdprDo","gdprZprac","thanksText","s-gdpr"]
@@ -697,18 +723,21 @@ function newState(){
 
 /* ====================== ÚVOD ====================== */
 
-function dayStats(){
-  var today = new Date().toISOString().slice(0, 10);
+/* Počítadlo matchů v tomhle zařízení. Nenuluje se, jen roste.
+   Při prvním spuštění převezme dnešní stav ze starého denního počítadla. */
+var TOTAL_KEY = "vste-matcher-celkem";
+function pocetMatchu(){
   try {
+    var n = parseInt(localStorage.getItem(TOTAL_KEY), 10);
+    if (!isNaN(n)) return n;
     var d = JSON.parse(localStorage.getItem(DAY_KEY) || "null");
-    if (!d || d.date !== today) d = {date:today, n:0};
-    return d;
-  } catch (e){ return {date:today, n:0}; }
+    return d && d.n ? d.n : 0;
+  } catch (e){ return 0; }
 }
-function bumpDay(){
-  var d = dayStats(); d.n++;
-  try { localStorage.setItem(DAY_KEY, JSON.stringify(d)); } catch (e){}
-  return d.n;
+function pridejMatch(){
+  var n = pocetMatchu() + 1;
+  try { localStorage.setItem(TOTAL_KEY, String(n)); } catch (e){}
+  return n;
 }
 
 function renderStart(){
@@ -717,8 +746,8 @@ function renderStart(){
   parts.length = 0;
   uvolniVidea(); el.ans.innerHTML = ""; el.ans.className = "";
   S = newState();
-  el.dayCount.innerHTML = "Dnes matchnuto: <b></b>";
-  el.dayCount.querySelector("b").textContent = dayStats().n;
+  el.dayCount.innerHTML = "Matchnuto celkem: <b></b>";
+  el.dayCount.querySelector("b").textContent = pocetMatchu().toLocaleString("cs-CZ");
   el.levelOpts.innerHTML = "";
   ["bc","mgr"].forEach(function(id, i){
     var d = QUIZ[id], li = document.createElement("li");
@@ -841,11 +870,14 @@ function dlazdice(b, c){
   b.querySelector(".say").textContent = c.t;
 }
 
+/* Váha otázky: vážně míněná („Naostro“) má 2, odlehčená 1. Ať jedna vtipná otázka nerozhodne. */
+function vahaOtazky(q){ return q.tone === "Naostro" ? 2 : 1; }
+
 function vyber(i, btn){
   if (S.locked) return;
   S.locked = true;
-  var ans = otazky()[S.q].a[i];
-  Object.keys(ans.w).forEach(function(k){ if (k in S.pts) S.pts[k] += ans.w[k]; });
+  var q = otazky()[S.q], ans = q.a[i];
+  Object.keys(ans.w).forEach(function(k){ if (k in S.pts) S.pts[k] += ans.w[k] * vahaOtazky(q); });
   S.volby[S.q] = i;
   btn.classList.add("chosen");
   el.ans.classList.add("done");
@@ -872,8 +904,8 @@ function zpet(){
   S.q--;
   var v = S.volby[S.q];
   if (v != null){
-    var ans = otazky()[S.q].a[v];
-    Object.keys(ans.w).forEach(function(k){ if (k in S.pts) S.pts[k] -= ans.w[k]; });
+    var q = otazky()[S.q], ans = q.a[v];
+    Object.keys(ans.w).forEach(function(k){ if (k in S.pts) S.pts[k] -= ans.w[k] * vahaOtazky(q); });
   }
   S.volby[S.q] = undefined;
   renderQ();
@@ -887,9 +919,21 @@ function finish(){
 
   if (total <= 0){ el.undo.hidden = true; show("s-nomatch"); return; }
 
+  /* Maximum, které šlo u zodpovězených otázek získat (nejsilnější odpověď × váha).
+     Je stejné pro všechny obory, takže procenta jdou férově porovnat. */
+  var maxBody = 0;
+  S.volby.forEach(function(v, i){
+    if (v == null) return;
+    var q = quiz.qs[i], nej = 0;
+    q.a.forEach(function(a){ Object.keys(a.w).forEach(function(k){ nej = Math.max(nej, a.w[k]); }); });
+    maxBody += nej * vahaOtazky(q);
+  });
+
   var rank = quiz.order.slice().sort(function(a, b){ return S.pts[b] - S.pts[a]; });
-  var top = rank[0], share = S.pts[top] / total;
-  var pct = Math.round(78 + 20 * Math.max(0, Math.min(1, (share - 0.35) / 0.4)));
+  var shody = rank.map(function(k){
+    return {k:k, pct: Math.max(0, Math.min(100, Math.round(100 * S.pts[k] / (maxBody || 1))))};
+  });
+  var top = rank[0];
 
   var whys = [];
   S.volby.forEach(function(v, i){
@@ -898,7 +942,7 @@ function finish(){
     if (top in ans.w) whys.push(ans.why);
   });
 
-  S.result = {top:top, second:rank[1], pct:pct, why:whys, rank:bumpDay()};
+  S.result = {top:top, second:rank[1], pct:shody[0].pct, shody:shody, why:whys, celkem:pridejMatch()};
   matchReveal(top, renderResult);
 }
 
@@ -924,10 +968,18 @@ function renderResult(){
   el.rWhy.appendChild(document.createTextNode(uniq.length ? uniq.join(" · ") : "vybíral jsi přesně tímhle směrem"));
   el.rRank.textContent = "📸 Vyfoť se s výsledkem";
 
-  el.rRunner.innerHTML = "";
-  var a = document.createElement("span"); a.textContent = "Druhá nejbližší shoda";
-  var b2 = document.createElement("strong"); b2.textContent = s.n;
-  el.rRunner.appendChild(a); el.rRunner.appendChild(b2);
+  el.rBars.innerHTML = "";
+  r.shody.forEach(function(x, i){
+    var li = document.createElement("li");
+    if (i === 0) li.className = "top";
+    li.innerHTML = '<span class="nm"></span><span class="pc"></span><span class="tr"><span class="fill"></span></span>';
+    li.querySelector(".nm").textContent = PROGRAMS[x.k].n;
+    li.querySelector(".pc").textContent = x.pct + " %";
+    el.rBars.appendChild(li);
+  });
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    Array.prototype.forEach.call(el.rBars.querySelectorAll(".fill"), function(f, i){ f.style.width = r.shody[i].pct + "%"; });
+  }); });
 
   vycistiFormular();
   el.undo.hidden = true; el.restart.hidden = false;
@@ -962,7 +1014,7 @@ sizeFx(); addEventListener("resize", sizeFx);
 
 function burst(){
   if (reduce) return;
-  var cols = ["#C61517","#DD3ECA","#9442CE","#FFFFFF","#FFC53D"];
+  var cols = ["#9A2221","#C8203F","#B53F80","#F2C14E","#FFFFFF"];
   var cx = innerWidth / 2, cy = innerHeight * .36;
   for (var i = 0; i < 140; i++){
     var ang = Math.random() * Math.PI * 2, sp = 3 + Math.random() * 9;
@@ -1166,7 +1218,7 @@ function aktivniRezim(){
 function ukazRezim(){
   var light = aktivniRezim() === "light";
   el.theme.textContent = light ? "☾" : "☀";
-  el.theme.title = light ? "Tmavý režim" : "Světlý režim";
+  el.theme.title = light ? "Karmínový režim" : "Bílý režim";
 }
 (function(){
   try { var t = localStorage.getItem(THEME_KEY); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e){}
